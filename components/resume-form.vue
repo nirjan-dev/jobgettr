@@ -50,13 +50,13 @@ import {
   NDynamicInput,
   NButton,
 } from "naive-ui";
+import { useResumeStore } from "~/store/resumeStore";
 
 const formRef = ref<FormInst | null>(null);
 
-const formValue = ref({
-  skills: [],
-  jobs: [],
-});
+const { setResume, resume } = useResumeStore();
+
+const formValue = ref(resume);
 
 const onCreateJob = () => {
   return {
@@ -75,7 +75,7 @@ const onCreateAccomplishments = () => {
 };
 
 const onSubmit = () => {
-  console.log(formValue.value);
+  setResume(formValue.value);
 };
 </script>
 

@@ -29,17 +29,8 @@
       </section>
       <section>
         <h3>Skills</h3>
-        <ul>
-          <li>Vue</li>
-          <li>CSS</li>
-          <li>TypeScript</li>
-          <li>Nuxt.js</li>
-          <li>Tailwind CSS</li>
-          <li>Google Cloud Platform</li>
-          <li>SQL</li>
-          <li>OpenAI</li>
-          <li>JavaScript</li>
-          <li>PostgresSQL</li>
+        <ul v-if="resume.skills && resume.skills.length > 0">
+          <li v-for="skill in resume.skills" :key="skill">{{ skill }}</li>
         </ul>
       </section>
       <section>
@@ -47,22 +38,12 @@
         <h4>Full-Stack Developer</h4>
         <h5>OpenAI</h5>
         <h6>2021 - Present</h6>
-        <ul>
-          <li>
-            Worked on the OpenAI Codex Playground, a web application that
-            demonstrates the capabilities of OpenAI Codex.
-          </li>
-          <li>
-            Built the OpenAI Codex Playground using Vue, TypeScript, and
-            Tailwind CSS.
-          </li>
-          <li>
-            Worked on the OpenAI Codex Playground, a web application that
-            demonstrates the capabilities of OpenAI Codex.
-          </li>
-          <li>
-            Built the OpenAI Codex Playground using Vue, TypeScript, and
-            Tailwind CSS.
+        <ul v-if="firstJobAccomplishments.length > 0">
+          <li
+            v-for="accomplishment in firstJobAccomplishments"
+            :key="accomplishment"
+          >
+            {{ accomplishment }}
           </li>
         </ul>
       </section>
@@ -71,22 +52,12 @@
         <h4>Full-Stack Developer</h4>
         <h5>OpenAI</h5>
         <h6>2021 - Present</h6>
-        <ul>
-          <li>
-            Worked on the OpenAI Codex Playground, a web application that
-            demonstrates the capabilities of OpenAI Codex.
-          </li>
-          <li>
-            Built the OpenAI Codex Playground using Vue, TypeScript, and
-            Tailwind CSS.
-          </li>
-          <li>
-            Worked on the OpenAI Codex Playground, a web application that
-            demonstrates the capabilities of OpenAI Codex.
-          </li>
-          <li>
-            Built the OpenAI Codex Playground using Vue, TypeScript, and
-            Tailwind CSS.
+        <ul v-if="secondJobAccomplishments.length > 0">
+          <li
+            v-for="accomplishment in secondJobAccomplishments"
+            :key="accomplishment"
+          >
+            {{ accomplishment }}
           </li>
         </ul>
       </section>
@@ -111,7 +82,19 @@
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { useResumeStore } from "~/store/resumeStore";
+
+const { resume } = useResumeStore();
+
+const firstJobAccomplishments = resume.jobs?.[0]?.accomplishments.map(
+  (a) => a.title
+);
+
+const secondJobAccomplishments = resume.jobs?.[1]?.accomplishments.map(
+  (a) => a.title
+);
+</script>
 
 <style scoped>
 a {

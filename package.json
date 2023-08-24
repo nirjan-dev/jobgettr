@@ -13,10 +13,17 @@
     "@nuxt/devtools": "latest",
     "@nuxtjs/tailwindcss": "^6.8.0",
     "@types/node": "^18.17.3",
+    "@vueuse/core": "^10.3.0",
+    "@vueuse/nuxt": "^10.3.0",
     "nuxt": "^3.6.5"
   },
   "dependencies": {
     "@css-render/vue3-ssr": "^0.15.12",
-    "naive-ui": "^2.34.4"
+    "@pinia/nuxt": "^0.4.11",
+    "naive-ui": "^2.34.4",
+    "pinia": "^2.1.6"
+  },
+  "overrides": {
+    "vue": "latest"
   }
 }
