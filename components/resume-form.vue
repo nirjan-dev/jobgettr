@@ -49,6 +49,7 @@ import {
   NDynamicTags,
   NDynamicInput,
   NButton,
+  useMessage,
 } from "naive-ui";
 import { useResumeStore } from "~/store/resumeStore";
 
@@ -57,6 +58,8 @@ const formRef = ref<FormInst | null>(null);
 const { setResume, resume } = useResumeStore();
 
 const formValue = ref(resume);
+
+const message = useMessage();
 
 const onCreateJob = () => {
   return {
@@ -75,7 +78,13 @@ const onCreateAccomplishments = () => {
 };
 
 const onSubmit = () => {
-  setResume(formValue.value);
+  try {
+    setResume(formValue.value);
+    message.success("Resume Saved");
+  } catch (error) {
+    message.error("Something went wrong");
+    console.log({ error });
+  }
 };
 </script>
 

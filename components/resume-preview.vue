@@ -1,23 +1,39 @@
 <template>
-  <div class="max-w-screen-lg mx-auto p-8">
-    <div class="grid gap-2 mb-6">
-      <h2 class="text-5xl font-bold text-center">Nirjan Kahdka</h2>
-      <h3 class="text-center text-2xl">Full-Stack Developer</h3>
-      <ul class="flex flex-wrap justify-center gap-2">
+  <div class="mx-auto py-2 px-6">
+    <div class="grid gap-1">
+      <h2 class="text-4xl font-bold text-center">Nirjan Khadka</h2>
+      <h3 class="text-center text-xl">Full-Stack Developer</h3>
+      <ul class="flex flex-wrap justify-center gap-4">
         <li>
-          <a href="mailto:webdev.nk@gmail.com">webdev.nk@gmail.com</a>
+          <a href="tel:+9779862437547">+977 9862437547</a>
+        </li>
+        <li>kathmandu, Nepal</li>
+      </ul>
+      <ul class="flex flex-wrap justify-center gap-4">
+        <li>
+          <a href="mailto:webdev.nk@gmail.com"> webdev.nk@gmail.com</a>
+        </li>
+        <li><a href="https://nirjan.dev">nirjan.dev</a></li>
+        <li>
+          <a href="https://linkedin.com/in/nirjankhadka/"
+            >https://linkedin.com/in/nirjankhadka</a
+          >
         </li>
         <li>
-          <a href="https://linkedin.com/in/nirjankhadka/">LinkedIn</a>
+          <a href="https://twitter.com/nirjan_dev"
+            >https://twitter.com/nirjan_dev</a
+          >
         </li>
-        <li><a href="https://gitbub.com/nirjan-dev/">Github</a></li>
-        <li><a href="https://twitter.com/nirjan_dev">twitter</a></li>
-        <li><a href="https://nirjan.dev">Personal Site</a></li>
+        <li>
+          <a href="https://gitbub.com/nirjan-dev/"
+            >https://gitbub.com/nirjan-dev/</a
+          >
+        </li>
       </ul>
     </div>
 
-    <div class="grid gap-4">
-      <section>
+    <div class="grid gap-2">
+      <section class="grid gap-1">
         <h3>Summary</h3>
         <p>
           Self-taught web developer with 5+ years of experience in building and
@@ -27,55 +43,77 @@
           lives.
         </p>
       </section>
-      <section>
+      <section class="grid gap-1">
         <h3>Skills</h3>
-        <ul v-if="resume.skills && resume.skills.length > 0">
+        <ul
+          class="flex flex-wrap gap-5"
+          v-if="resume.skills && resume.skills.length > 0"
+        >
           <li v-for="skill in resume.skills" :key="skill">{{ skill }}</li>
         </ul>
       </section>
-      <section>
-        <h3>Experience</h3>
-        <h4>Full-Stack Developer</h4>
-        <h5>OpenAI</h5>
-        <h6>2021 - Present</h6>
-        <ul v-if="firstJobAccomplishments.length > 0">
-          <li
-            v-for="accomplishment in firstJobAccomplishments"
-            :key="accomplishment"
-          >
-            {{ accomplishment }}
-          </li>
-        </ul>
-      </section>
-      <section>
-        <h3>Experience</h3>
-        <h4>Full-Stack Developer</h4>
-        <h5>OpenAI</h5>
-        <h6>2021 - Present</h6>
-        <ul v-if="secondJobAccomplishments.length > 0">
-          <li
-            v-for="accomplishment in secondJobAccomplishments"
-            :key="accomplishment"
-          >
-            {{ accomplishment }}
-          </li>
-        </ul>
-      </section>
-      <section>
-        <h3>Projects</h3>
+      <section class="grid gap-1">
+        <h3>Work Experience</h3>
+
         <article>
-          <h4><a href="https://remotedevjobs.net">remotedevjobs.net</a></h4>
-          <h5>Job Board Site to find remote tech jobs</h5>
-          <h5>
-            Technologies: Nuxt.js, Typescript, TailwindCSS, OpenAI, Prisma
-          </h5>
+          <h4 class="text-xl">
+            Full-Stack Developer
+            <span class="text-base float-right">Dec 2021 - Present</span>
+          </h4>
+          <h5 class="text-lg">Gfinity PLC</h5>
+
+          <ul v-if="firstJobAccomplishments.length > 0">
+            <li
+              v-for="accomplishment in firstJobAccomplishments"
+              :key="accomplishment"
+            >
+              {{ accomplishment }}
+            </li>
+          </ul>
         </article>
+
         <article>
-          <h4><a href="https://remotedevjobs.net">remotedevjobs.net</a></h4>
-          <h5>Job Board Site to find remote tech jobs</h5>
-          <h5>
-            Technologies: Nuxt.js, Typescript, TailwindCSS, OpenAI, Prisma
-          </h5>
+          <h4 class="text-xl">
+            Frontend Developer
+            <span class="text-base float-right"
+              >Aug 2019 - Dec 2021, 2yrs 4mos</span
+            >
+          </h4>
+          <h5 class="text-lg">Ensue LLC</h5>
+          <ul v-if="secondJobAccomplishments.length > 0">
+            <li
+              v-for="accomplishment in secondJobAccomplishments"
+              :key="accomplishment"
+            >
+              {{ accomplishment }}
+            </li>
+          </ul>
+        </article>
+      </section>
+      <section class="grid gap-1">
+        <h3>Projects</h3>
+        <article class="grid">
+          <h4 class="text-xl">
+            <a href="https://remotedevjobs.net">remotedevjobs.net</a>
+          </h4>
+          <h5 class="font-normal">Job Board Site to find remote tech jobs</h5>
+        </article>
+
+        <article class="grid">
+          <h4 class="text-xl">
+            <a href="https://nirjan.dev">nirjan.dev</a>
+          </h4>
+          <h5 class="font-normal">Personal Site & Blog</h5>
+        </article>
+
+        <article class="grid">
+          <h4 class="text-xl">
+            <a
+              href="https://play.google.com/store/apps/details?id=com.nirjan.smartspend"
+              >SmartSpend</a
+            >
+          </h4>
+          <h5 class="font-normal">Android Purchase Planning App</h5>
         </article>
       </section>
     </div>
@@ -105,9 +143,9 @@ h3 {
   @apply text-2xl font-bold mb-2;
 }
 
-section h3:after {
-  content: "";
-  @apply block  h-0.5 bg-gray-500;
+section h3 {
+  border-bottom: 2px solid;
+  @apply border-gray-300 pb-2;
 }
 
 section li {
