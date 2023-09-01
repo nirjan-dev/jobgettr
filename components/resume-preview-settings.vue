@@ -28,7 +28,7 @@
         path="jobs"
         :show-label="false"
       >
-        <n-grid class="mb-6" :cols="1">
+        <n-grid class="mb-2" :cols="1">
           <n-gi>
             <n-checkbox
               class="mb-2"
@@ -43,10 +43,46 @@
         </n-grid>
       </n-form-item>
 
-      <!-- <n-form-item>
-        <n-button type="success" @click="onSubmit"> Save </n-button>
-      </n-form-item> -->
+      <div class="hidden" id="resumeDetails">
+        <h4>Skills Enabled:</h4>
+
+        <ul>
+          <li v-for="skill in enabledSkills" :key="skill">{{ skill }}</li>
+        </ul>
+
+        <br />
+
+        <h4>Role: {{ resumePreview.role }}</h4>
+
+        <br />
+
+        <h4>Job 1 accomplishments:</h4>
+        <ul>
+          <li
+            v-for="accomplishment in enabledFirstJobAccomplishments"
+            :key="accomplishment"
+          >
+            {{ accomplishment }}
+          </li>
+        </ul>
+
+        <h4>Job 2 accomplishments:</h4>
+        <ul>
+          <li
+            v-for="accomplishment in enabledSecondJobAccomplishments"
+            :key="accomplishment"
+          >
+            {{ accomplishment }}
+          </li>
+        </ul>
+      </div>
+
+      <div>
+        <n-button @click="generateResume">Print Resume</n-button>
+      </div>
     </n-form>
+
+    <textarea class="sr-only" id="copyTextArea"></textarea>
   </div>
 </template>
 
@@ -75,21 +111,42 @@ const formValue = ref(resumePreview);
 
 const message = useMessage();
 
-const onCreateJob = () => {
-  return {
-    accomplishments: [
-      {
-        title: "",
-      },
-    ],
-  };
-};
+const enabledSkills = computed(() => {
+  return resumePreview.skills
+    .filter((skill) => skill.enabled)
+    .map((skills) => skills.title);
+});
 
-const onCreateAccomplishments = () => {
-  return {
-    title: "",
-  };
-};
+const enabledFirstJobAccomplishments = computed(() => {
+  return resumePreview.jobs[0].accomplishments
+    .filter((accomplishment) => accomplishment.enabled)
+    .map((accomplishment) => accomplishment.title);
+});
+
+const enabledSecondJobAccomplishments = computed(() => {
+  return resumePreview.jobs[1].accomplishments
+    .filter((accomplishment) => accomplishment.enabled)
+    .map((accomplishment) => accomplishment.title);
+});
+
+function generateResume() {
+  if (window) {
+    window.print();
+
+    let copyText = document.getElementById("resumeDetails");
+    let copyTextArea = document.getElementById(
+      "copyTextArea"
+    ) as HTMLTextAreaElement;
+
+    if (copyText && copyTextArea) {
+      copyTextArea.value = copyText.innerHTML;
+    }
+
+    copyTextArea.select();
+
+    document.execCommand("copy");
+  }
+}
 
 // const onSubmit = () => {
 //   try {
