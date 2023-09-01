@@ -4,6 +4,7 @@
       <nav class="print:hidden flex justify-center items-center gap-4 py-4">
         <NuxtLink to="/">Home</NuxtLink>
         <NuxtLink to="/settings">Settings</NuxtLink>
+        <NuxtLink to="/applications">Applications</NuxtLink>
       </nav>
       <NuxtPage />
     </n-message-provider>

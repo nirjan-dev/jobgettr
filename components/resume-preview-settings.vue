@@ -76,13 +76,30 @@
           </li>
         </ul>
       </div>
-
-      <div>
-        <n-button @click="generateResume">Print Resume</n-button>
-      </div>
     </n-form>
 
-    <textarea class="sr-only" id="copyTextArea"></textarea>
+    <div>
+      <n-form ref="jobAppplicationFormRef" :model="jobApplicationFormValue">
+        <n-form-item label="Company" path="company">
+          <n-input v-model:value="jobApplicationFormValue.company"></n-input>
+        </n-form-item>
+
+        <n-form-item label="link" path="applicationLink">
+          <n-input
+            v-model:value="jobApplicationFormValue.applicationLink"
+          ></n-input>
+        </n-form-item>
+
+        <n-form-item label="Notes" path="notes">
+          <n-input
+            type="textarea"
+            v-model:value="jobApplicationFormValue.notes"
+          ></n-input>
+        </n-form-item>
+      </n-form>
+
+      <n-button @click="applyForJob">Apply for the Job</n-button>
+    </div>
   </div>
 </template>
 
@@ -92,22 +109,29 @@ import {
   NForm,
   NFormItem,
   NInput,
-  NDynamicTags,
-  NDynamicInput,
   NButton,
   NCheckbox,
   useMessage,
-  NCheckboxGroup,
   NGrid,
   NGi,
 } from "naive-ui";
+import { useApplicationsStore } from "~/store/applicationStore";
 import { useResumePreviewStore } from "~/store/resumePreviewStore";
 
 const formRef = ref<FormInst | null>(null);
+const jobAppplicationFormRef = ref<FormInst | null>(null);
 
 const { resumePreview } = useResumePreviewStore();
-
+const { addApplication } = useApplicationsStore();
 const formValue = ref(resumePreview);
+const jobApplicationFormValue = ref({
+  company: "",
+  resumeDetails: "",
+  applicationLink: "",
+  stage: "applied",
+  notes: "",
+  dateApplied: "",
+});
 
 const message = useMessage();
 
@@ -118,33 +142,33 @@ const enabledSkills = computed(() => {
 });
 
 const enabledFirstJobAccomplishments = computed(() => {
-  return resumePreview.jobs[0].accomplishments
+  return resumePreview?.jobs[0]?.accomplishments
     .filter((accomplishment) => accomplishment.enabled)
     .map((accomplishment) => accomplishment.title);
 });
 
 const enabledSecondJobAccomplishments = computed(() => {
-  return resumePreview.jobs[1].accomplishments
+  return resumePreview?.jobs[1]?.accomplishments
     .filter((accomplishment) => accomplishment.enabled)
     .map((accomplishment) => accomplishment.title);
 });
 
-function generateResume() {
+function applyForJob() {
   if (window) {
     window.print();
 
-    let copyText = document.getElementById("resumeDetails");
-    let copyTextArea = document.getElementById(
-      "copyTextArea"
-    ) as HTMLTextAreaElement;
+    let resumeDetailsElement = document.getElementById("resumeDetails");
 
-    if (copyText && copyTextArea) {
-      copyTextArea.value = copyText.innerHTML;
+    if (resumeDetailsElement) {
+      jobApplicationFormValue.value.resumeDetails =
+        resumeDetailsElement.innerHTML;
     }
 
-    copyTextArea.select();
+    jobApplicationFormValue.value.dateApplied = new Date().toISOString();
 
-    document.execCommand("copy");
+    addApplication(jobApplicationFormValue.value);
+
+    message.success("Job Application Saved");
   }
 }
 
