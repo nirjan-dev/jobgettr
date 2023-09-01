@@ -1,13 +1,13 @@
 <template>
   <div class="mx-auto py-2 px-6">
-    <div class="grid gap-1">
+    <div class="grid">
       <h2 class="text-4xl font-bold text-center">Nirjan Khadka</h2>
-      <h3 class="text-center text-xl">Full-Stack Developer</h3>
+      <h3 class="text-center text-xl">{{ resume.role }}</h3>
       <ul class="flex flex-wrap justify-center gap-4">
         <li>
           <a href="tel:+9779862437547">+977 9862437547</a>
         </li>
-        <li>kathmandu, Nepal</li>
+        <li>Kathmandu, Nepal</li>
       </ul>
       <ul class="flex flex-wrap justify-center gap-4">
         <li>
@@ -45,11 +45,12 @@
       </section>
       <section class="grid gap-1">
         <h3>Skills</h3>
-        <ul
-          class="flex flex-wrap gap-5"
-          v-if="resume.skills && resume.skills.length > 0"
-        >
-          <li v-for="skill in resume.skills" :key="skill">{{ skill }}</li>
+        <ul class="flex flex-wrap gap-5" v-if="resume?.skills?.length > 0">
+          <template v-for="skill in enabledSkills" :key="skill.title">
+            <li :v-if="skill.enabled">
+              {{ skill.title }}
+            </li>
+          </template>
         </ul>
       </section>
       <section class="grid gap-1">
@@ -57,14 +58,14 @@
 
         <article>
           <h4 class="text-xl">
-            Full-Stack Developer
+            {{ resume.role }}
             <span class="text-base float-right">Dec 2021 - Present</span>
           </h4>
           <h5 class="text-lg">Gfinity PLC</h5>
 
-          <ul v-if="firstJobAccomplishments.length > 0">
+          <ul v-if="enabledFirstJobAccomplishments?.length > 0">
             <li
-              v-for="accomplishment in firstJobAccomplishments"
+              v-for="accomplishment in enabledFirstJobAccomplishments"
               :key="accomplishment"
             >
               {{ accomplishment }}
@@ -80,9 +81,9 @@
             >
           </h4>
           <h5 class="text-lg">Ensue LLC</h5>
-          <ul v-if="secondJobAccomplishments.length > 0">
+          <ul v-if="enabledSecondJobAccomplishments?.length > 0">
             <li
-              v-for="accomplishment in secondJobAccomplishments"
+              v-for="accomplishment in enabledSecondJobAccomplishments"
               :key="accomplishment"
             >
               {{ accomplishment }}
@@ -121,17 +122,21 @@
 </template>
 
 <script setup lang="ts">
-import { useResumeStore } from "~/store/resumeStore";
+import { useResumePreviewStore } from "~/store/resumePreviewStore";
 
-const { resume } = useResumeStore();
+const { resumePreview: resume } = useResumePreviewStore();
 
-const firstJobAccomplishments = resume.jobs?.[0]?.accomplishments.map(
-  (a) => a.title
+const enabledFirstJobAccomplishments = computed(() =>
+  resume.jobs?.[0]?.accomplishments.filter((a) => a.enabled).map((a) => a.title)
 );
 
-const secondJobAccomplishments = resume.jobs?.[1]?.accomplishments.map(
-  (a) => a.title
+const enabledSecondJobAccomplishments = computed(() =>
+  resume.jobs?.[1]?.accomplishments.filter((a) => a.enabled).map((a) => a.title)
 );
+
+const enabledSkills = computed(() => {
+  return resume.skills?.filter((s) => s.enabled);
+});
 </script>
 
 <style scoped>

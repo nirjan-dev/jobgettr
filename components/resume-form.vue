@@ -2,6 +2,10 @@
   <div class="p-3 max-w-3xl mx-auto">
     <h2 class="text-2xl font-bold mb-4">Resume Settings</h2>
     <n-form ref="formRef" :model="formValue">
+      <n-form-item label="Role" path="role">
+        <n-input v-model:value="formValue.role"></n-input>
+      </n-form-item>
+
       <n-form-item label="Skills" path="skills">
         <n-dynamic-tags v-model:value="formValue.skills"></n-dynamic-tags>
       </n-form-item>

@@ -8,6 +8,7 @@ interface IResume {
       title: string;
     }[];
   }[];
+  role: string;
 }
 
 export const useResumeStore = defineStore("resume", () => {
@@ -22,9 +23,8 @@ export const useResumeStore = defineStore("resume", () => {
         ],
       },
     ],
+    role: "",
   });
-
-  console.log({ resume });
 
   const setResume = (updatedResume: IResume) => {
     console.log("setResume", updatedResume);
