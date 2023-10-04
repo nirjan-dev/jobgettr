@@ -48,5 +48,3 @@
 
   const { applications, deleteApplication } = useApplicationsStore();
 </script>
-
-<style scoped></style>

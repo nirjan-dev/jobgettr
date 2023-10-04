@@ -25,6 +25,7 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     '@vueuse/nuxt',
     '@nuxtjs/eslint-module',
+    '@nuxtjs/stylelint-module',
   ],
   typescript: {
     strict: true,

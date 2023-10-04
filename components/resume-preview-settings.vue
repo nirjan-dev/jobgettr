@@ -391,5 +391,3 @@
   //   }
   // };
 </script>
-
-<style scoped></style>

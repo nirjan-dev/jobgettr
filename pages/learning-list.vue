@@ -16,5 +16,3 @@
 
   const { learningList } = useLearningListStore();
 </script>
-
-<style scoped></style>
