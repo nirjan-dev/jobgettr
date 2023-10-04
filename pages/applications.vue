@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/no-v-html -->
 <template>
   <div class="px-4">
     <h1>Job Application History</h1>
@@ -29,10 +30,13 @@
         }}</a>
 
         <p v-if="application.notes">{{ application.notes }}</p>
-        <div
-          class="my-4 max-w-prose"
-          v-html="application.resumeDetails"
-        ></div>
+        <client-only>
+          <!-- TODO: Sanitize the HTML here -->
+          <div
+            class="my-4 max-w-prose"
+            v-html="application.resumeDetails"
+          ></div>
+        </client-only>
       </div>
     </div>
   </div>
