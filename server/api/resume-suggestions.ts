@@ -12,7 +12,7 @@ export default defineEventHandler(async (event) => {
 
   const skillsRecommendations = await getSkillsSuggestions(
     requiredSkills,
-    skills
+    skills,
   );
 
   const suggestedSkillsToEnable = skillsRecommendations.filter((skill) => {
@@ -101,7 +101,7 @@ async function getRequiredSkillsFromJD(description: string) {
 
 async function getSkillsSuggestions(
   requiredSkills: string[],
-  currentSkills: string[]
+  currentSkills: string[],
 ) {
   const template = `You are a tech recruiter. The user will pass you a currentSkills list and a requiredSkills list. Your task is to pick the items from the currentSkills list that match the requiredSkills list the most. Put the best matching skills at the top. You should return a comma separated list of the best matching skills from the currentSkills list. ONLY return a comma separated list, and nothing more. Only return a maximum of 15 skills. Never return a skill that is not in the currentSkills list.`;
 

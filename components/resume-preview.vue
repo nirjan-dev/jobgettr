@@ -132,16 +132,18 @@
 
   const { resumePreview: resume } = useResumePreviewStore();
 
-  const enabledFirstJobAccomplishments = computed(() =>
-    resume.jobs?.[0]?.accomplishments
-      .filter((a) => a.enabled)
-      .map((a) => a.title)
+  const enabledFirstJobAccomplishments = computed(
+    () =>
+      resume.jobs?.[0]?.accomplishments
+        .filter((a) => a.enabled)
+        .map((a) => a.title),
   );
 
-  const enabledSecondJobAccomplishments = computed(() =>
-    resume.jobs?.[1]?.accomplishments
-      .filter((a) => a.enabled)
-      .map((a) => a.title)
+  const enabledSecondJobAccomplishments = computed(
+    () =>
+      resume.jobs?.[1]?.accomplishments
+        .filter((a) => a.enabled)
+        .map((a) => a.title),
   );
 
   const enabledSkills = computed(() => {
