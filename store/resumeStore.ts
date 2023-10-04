@@ -1,5 +1,5 @@
-import { defineStore, skipHydrate } from "pinia";
-import { useLocalStorage } from "@vueuse/core";
+import { defineStore, skipHydrate } from 'pinia';
+import { useLocalStorage } from '@vueuse/core';
 
 interface IResume {
   skills: string[];
@@ -11,25 +11,25 @@ interface IResume {
   role: string;
 }
 
-export const useResumeStore = defineStore("resume", () => {
-  const resume = useLocalStorage("pinia/resume/resume", {
+export const useResumeStore = defineStore('resume', () => {
+  const resume = useLocalStorage('pinia/resume/resume', {
     skills: [],
     jobs: [
       {
         accomplishments: [
           {
-            title: "",
+            title: '',
           },
         ],
       },
     ],
-    role: "",
+    role: '',
   });
 
   const setResume = (updatedResume: IResume) => {
-    console.log("setResume", updatedResume);
+    console.log('setResume', updatedResume);
     (resume.value as IResume) = updatedResume;
-    console.log("resume", resume.value);
+    console.log('resume', resume.value);
   };
 
   return {

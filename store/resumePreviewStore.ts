@@ -1,5 +1,5 @@
-import { defineStore, skipHydrate } from "pinia";
-import { useResumeStore } from "~/store/resumeStore";
+import { defineStore, skipHydrate } from 'pinia';
+import { useResumeStore } from '~/store/resumeStore';
 
 interface IResumePreview {
   skills: {
@@ -15,7 +15,7 @@ interface IResumePreview {
   role: string;
 }
 
-export const useResumePreviewStore = defineStore("resumePreview", () => {
+export const useResumePreviewStore = defineStore('resumePreview', () => {
   const { resume } = useResumeStore();
 
   const resumePreview: Ref<IResumePreview> = ref({

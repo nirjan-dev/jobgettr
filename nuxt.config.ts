@@ -2,29 +2,29 @@
 export default defineNuxtConfig({
   build: {
     transpile:
-      process.env.NODE_ENV === "production"
+      process.env.NODE_ENV === 'production'
         ? [
-            "naive-ui",
-            "vueuc",
-            "@css-render/vue3-ssr",
-            "@juggle/resize-observer",
+            'naive-ui',
+            'vueuc',
+            '@css-render/vue3-ssr',
+            '@juggle/resize-observer',
           ]
-        : ["@juggle/resize-observer"],
+        : ['@juggle/resize-observer'],
   },
   vite: {
     optimizeDeps: {
       include:
-        process.env.NODE_ENV === "development"
-          ? ["naive-ui", "vueuc", "date-fns-tz/esm/formatInTimeZone"]
+        process.env.NODE_ENV === 'development'
+          ? ['naive-ui', 'vueuc', 'date-fns-tz/esm/formatInTimeZone']
           : [],
     },
   },
   devtools: { enabled: true },
   modules: [
-    "@nuxtjs/tailwindcss",
-    "@pinia/nuxt",
-    "@vueuse/nuxt",
-    "@nuxtjs/eslint-module",
+    '@nuxtjs/tailwindcss',
+    '@pinia/nuxt',
+    '@vueuse/nuxt',
+    '@nuxtjs/eslint-module',
   ],
   typescript: {
     strict: true,

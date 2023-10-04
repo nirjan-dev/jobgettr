@@ -1,4 +1,4 @@
-import { defineStore, skipHydrate } from "pinia";
+import { defineStore, skipHydrate } from 'pinia';
 
 interface IlearningListItem {
   skill: string;
@@ -6,17 +6,17 @@ interface IlearningListItem {
 }
 
 interface ILearningListItemWithoutJobs
-  extends Omit<IlearningListItem, "jobs"> {}
+  extends Omit<IlearningListItem, 'jobs'> {}
 
-export const useLearningListStore = defineStore("learningList", () => {
+export const useLearningListStore = defineStore('learningList', () => {
   const learningList: Ref<IlearningListItem[]> = useLocalStorage(
-    "pinia/learningList/learningList",
-    []
+    'pinia/learningList/learningList',
+    [],
   );
 
   const addItemToLearningList = (newItem: ILearningListItemWithoutJobs) => {
     const existingItem = learningList.value.find(
-      (item) => item.skill === newItem.skill
+      (item) => item.skill === newItem.skill,
     );
 
     if (existingItem) {
@@ -31,7 +31,7 @@ export const useLearningListStore = defineStore("learningList", () => {
   };
 
   const addMultipleItemsToLearningList = (
-    newItems: ILearningListItemWithoutJobs[]
+    newItems: ILearningListItemWithoutJobs[],
   ) => {
     newItems.forEach((item) => {
       addItemToLearningList(item);

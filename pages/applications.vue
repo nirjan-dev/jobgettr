@@ -2,7 +2,10 @@
   <div class="px-4">
     <h1>Job Application History</h1>
 
-    <div class="py-6" v-if="applications">
+    <div
+      class="py-6"
+      v-if="applications"
+    >
       <div
         class="border-solid px-3 py-4 my-3 rounded-lg border-b-2 border-gray-700"
         v-for="application in applications"
@@ -26,17 +29,20 @@
         }}</a>
 
         <p v-if="application.notes">{{ application.notes }}</p>
-        <div class="my-4 max-w-prose" v-html="application.resumeDetails"></div>
+        <div
+          class="my-4 max-w-prose"
+          v-html="application.resumeDetails"
+        ></div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { NButton } from "naive-ui";
-import { useApplicationsStore } from "~/store/applicationStore";
+  import { NButton } from 'naive-ui';
+  import { useApplicationsStore } from '~/store/applicationStore';
 
-const { applications, deleteApplication } = useApplicationsStore();
+  const { applications, deleteApplication } = useApplicationsStore();
 </script>
 
 <style scoped></style>

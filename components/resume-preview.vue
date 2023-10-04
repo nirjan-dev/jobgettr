@@ -45,8 +45,14 @@
       </section>
       <section class="grid gap-1">
         <h3>Skills</h3>
-        <ul class="flex flex-wrap gap-5" v-if="resume?.skills?.length > 0">
-          <template v-for="skill in enabledSkills" :key="skill.title">
+        <ul
+          class="flex flex-wrap gap-5"
+          v-if="resume?.skills?.length > 0"
+        >
+          <template
+            v-for="skill in enabledSkills"
+            :key="skill.title"
+          >
             <li :v-if="skill.enabled">
               {{ skill.title }}
             </li>
@@ -122,38 +128,44 @@
 </template>
 
 <script setup lang="ts">
-import { useResumePreviewStore } from "~/store/resumePreviewStore";
+  import { useResumePreviewStore } from '~/store/resumePreviewStore';
 
-const { resumePreview: resume } = useResumePreviewStore();
+  const { resumePreview: resume } = useResumePreviewStore();
 
-const enabledFirstJobAccomplishments = computed(() =>
-  resume.jobs?.[0]?.accomplishments.filter((a) => a.enabled).map((a) => a.title)
-);
+  const enabledFirstJobAccomplishments = computed(
+    () =>
+      resume.jobs?.[0]?.accomplishments
+        .filter((a) => a.enabled)
+        .map((a) => a.title),
+  );
 
-const enabledSecondJobAccomplishments = computed(() =>
-  resume.jobs?.[1]?.accomplishments.filter((a) => a.enabled).map((a) => a.title)
-);
+  const enabledSecondJobAccomplishments = computed(
+    () =>
+      resume.jobs?.[1]?.accomplishments
+        .filter((a) => a.enabled)
+        .map((a) => a.title),
+  );
 
-const enabledSkills = computed(() => {
-  return resume.skills?.filter((s) => s.enabled);
-});
+  const enabledSkills = computed(() => {
+    return resume.skills?.filter((s) => s.enabled);
+  });
 </script>
 
 <style scoped>
-a {
-  @apply text-blue-500;
-}
+  a {
+    @apply text-blue-500;
+  }
 
-h3 {
-  @apply text-2xl font-bold mb-2;
-}
+  h3 {
+    @apply text-2xl font-bold mb-2;
+  }
 
-section h3 {
-  border-bottom: 2px solid;
-  @apply border-gray-300 pb-2;
-}
+  section h3 {
+    border-bottom: 2px solid;
+    @apply border-gray-300 pb-2;
+  }
 
-section li {
-  @apply mb-1 list-disc;
-}
+  section li {
+    @apply mb-1 list-disc;
+  }
 </style>

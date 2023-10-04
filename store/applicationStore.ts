@@ -1,5 +1,5 @@
-import { defineStore, skipHydrate } from "pinia";
-import { useLocalStorage } from "@vueuse/core";
+import { defineStore, skipHydrate } from 'pinia';
+import { useLocalStorage } from '@vueuse/core';
 
 interface IApplication {
   resumeDetails: string;
@@ -10,10 +10,10 @@ interface IApplication {
   dateApplied: string;
 }
 
-export const useApplicationsStore = defineStore("application", () => {
+export const useApplicationsStore = defineStore('application', () => {
   const applications: Ref<IApplication[]> = useLocalStorage(
-    "pinia/application/applications",
-    []
+    'pinia/application/applications',
+    [],
   );
 
   const addApplication = (newApplication: IApplication) => {
@@ -22,7 +22,7 @@ export const useApplicationsStore = defineStore("application", () => {
 
   const deleteApplication = (applicationLink: string) => {
     const index = applications.value.findIndex(
-      (application) => application.applicationLink === applicationLink
+      (application) => application.applicationLink === applicationLink,
     );
     applications.value.splice(index, 1);
   };
