@@ -12,6 +12,10 @@
   </div>
 </template>
 
+<script lang="ts" setup>
+  import { NMessageProvider } from 'naive-ui';
+</script>
+
 <style>
   body {
     @apply font-sans leading-6;
@@ -34,7 +38,3 @@
     @apply text-blue-500 no-underline;
   }
 </style>
-
-<script lang="ts" setup>
-  import { NMessageProvider } from 'naive-ui';
-</script>

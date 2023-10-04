@@ -17,13 +17,13 @@ export default defineNuxtPlugin((nuxtApp) => {
         return originalMeta.then((resolvedOriginalMeta) => {
           return {
             ...resolvedOriginalMeta,
-            headTags: resolvedOriginalMeta['headTags'] + collect(),
+            headTags: resolvedOriginalMeta.headTags + collect(),
           };
         });
       } else {
         return {
           ...originalMeta,
-          headTags: originalMeta['headTags'] + collect(),
+          headTags: originalMeta.headTags + collect(),
         };
       }
     };

@@ -3,13 +3,13 @@
     <h1>Job Application History</h1>
 
     <div
-      class="py-6"
       v-if="applications"
+      class="py-6"
     >
       <div
-        class="border-solid px-3 py-4 my-3 rounded-lg border-b-2 border-gray-700"
         v-for="application in applications"
         :key="application.applicationLink"
+        class="border-solid px-3 py-4 my-3 rounded-lg border-b-2 border-gray-700"
       >
         <h2 class="mb-2">{{ application.company }}</h2>
 
