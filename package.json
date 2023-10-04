@@ -7,7 +7,9 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "commit": "cz"
+    "commit": "cz",
+    "prepare": "husky install",
+    "lint-staged": "lint-staged"
   },
   "devDependencies": {
     "@element-plus/nuxt": "^1.0.5",
@@ -23,7 +25,10 @@
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "^8.50.0",
     "eslint-config-prettier": "^9.0.0",
+    "husky": "^8.0.0",
+    "lint-staged": "^14.0.1",
     "nuxt": "^3.6.5",
+    "prettier": "^3.0.3",
     "stylelint": "^15.10.3",
     "stylelint-config-recommended-vue": "^1.5.0"
   },
