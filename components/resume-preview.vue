@@ -36,11 +36,11 @@
       <section class="grid gap-1">
         <h3>Summary</h3>
         <p>
-          Self-taught web developer with 5+ years of experience in building and
+          Self-taught developer with 5+ years of experience in building and
           delivering high-quality web applications. Comfortable working in a
-          fast-paced remote team and constantly learning new technologies.
-          Passionate about building software that helps people improve their
-          lives.
+          fast-paced remote team across multiple timezones. Lifelong learner and
+          passionate about using my tech skills to make a meaningful difference
+          to people's lives.
         </p>
       </section>
       <section class="grid gap-1">

@@ -5,6 +5,7 @@
         <NuxtLink to="/">Home</NuxtLink>
         <NuxtLink to="/settings">Settings</NuxtLink>
         <NuxtLink to="/applications">Applications</NuxtLink>
+        <NuxtLink to="/learning-list">Learning List</NuxtLink>
       </nav>
       <NuxtPage />
     </n-message-provider>
