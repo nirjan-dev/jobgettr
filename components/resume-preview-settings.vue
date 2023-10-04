@@ -34,11 +34,11 @@
         </n-form-item>
 
         <n-button
-          @click="getResumeSuggestions"
           class="mb-3"
           role="button"
           type="info"
           :loading="isLoadingSuggestions"
+          @click="getResumeSuggestions"
         >
           Get Resume Suggestions</n-button
         >
@@ -48,8 +48,8 @@
           path="notes"
         >
           <n-input
-            type="textarea"
             v-model:value="jobApplicationFormValue.notes"
+            type="textarea"
           ></n-input>
         </n-form-item>
       </n-form>
@@ -79,8 +79,8 @@
         >
           <n-gi>
             <n-checkbox
-              :key="skill.title"
               v-for="skill in formValue.skills"
+              :key="skill.title"
               v-model:checked="skill.enabled"
               :value="skill.title"
             >
@@ -103,10 +103,10 @@
         >
           <n-gi>
             <n-checkbox
-              class="mb-2"
-              :key="accomplishment.title"
               v-for="accomplishment in job.accomplishments"
+              :key="accomplishment.title"
               v-model:checked="accomplishment.enabled"
+              class="mb-2"
               :value="accomplishment.title"
             >
               {{ accomplishment.title }}
@@ -116,8 +116,8 @@
       </n-form-item>
 
       <div
-        class="hidden"
         id="resumeDetails"
+        class="hidden"
       >
         <h4>Skills Enabled:</h4>
 
@@ -184,8 +184,8 @@
 
         <NButton
           type="success"
-          @click="applySuggestions"
           class="mr-2"
+          @click="applySuggestions"
           >Apply Changes</NButton
         >
         <NButton
@@ -211,7 +211,6 @@
     NGi,
     NModal,
     NCard,
-    NSpace,
     NSelect,
   } from 'naive-ui';
   import { useLearningListStore } from '~/store/learningListStore.ts';
@@ -286,7 +285,7 @@
     if (window) {
       window.print();
 
-      let resumeDetailsElement = document.getElementById('resumeDetails');
+      const resumeDetailsElement = document.getElementById('resumeDetails');
 
       if (resumeDetailsElement) {
         jobApplicationFormValue.value.resumeDetails =

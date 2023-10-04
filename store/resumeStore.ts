@@ -27,9 +27,7 @@ export const useResumeStore = defineStore('resume', () => {
   });
 
   const setResume = (updatedResume: IResume) => {
-    console.log('setResume', updatedResume);
     (resume.value as IResume) = updatedResume;
-    console.log('resume', resume.value);
   };
 
   return {

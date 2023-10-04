@@ -1,11 +1,6 @@
-import * as cheerio from 'cheerio';
-import { OpenAI } from 'langchain/llms/openai';
 import { ChatOpenAI } from 'langchain/chat_models/openai';
 import { ChatPromptTemplate } from 'langchain/prompts';
-import {
-  BaseOutputParser,
-  FormatInstructionsOptions,
-} from 'langchain/schema/output_parser';
+import { BaseOutputParser } from 'langchain/schema/output_parser';
 
 export default defineEventHandler(async (event) => {
   const { url } = getQuery(event);
@@ -17,7 +12,7 @@ export default defineEventHandler(async (event) => {
 
   const skillsRecommendations = await getSkillsSuggestions(
     requiredSkills,
-    skills,
+    skills
   );
 
   const suggestedSkillsToEnable = skillsRecommendations.filter((skill) => {
@@ -40,51 +35,39 @@ export default defineEventHandler(async (event) => {
   };
 });
 
-function getMockValues(skills: string[]) {
-  const randomSkills = skills.filter((skill: string) => Math.random() < 0.5);
+// function getMockValues(skills: string[]) {
+//   const randomSkills = skills.filter((skill: string) => Math.random() < 0.5);
 
-  const recommendedSkills: string[] = [
-    ...randomSkills,
-    'GraphQL',
-    'Python',
-    'Flask',
-    'SQL Alchemy',
-    'Drizzle ORM',
-    'AppWrite',
-    'Svelte',
-    'Kotlin',
-    'Spring Boot',
-  ];
+//   const recommendedSkills: string[] = [
+//     ...randomSkills,
+//     'GraphQL',
+//     'Python',
+//     'Flask',
+//     'SQL Alchemy',
+//     'Drizzle ORM',
+//     'AppWrite',
+//     'Svelte',
+//     'Kotlin',
+//     'Spring Boot',
+//   ];
 
-  const suggestedSkillsToEnable: string[] = recommendedSkills.filter(
-    (skill) => {
-      return skills.includes(skill);
-    },
-  );
+//   const suggestedSkillsToEnable: string[] = recommendedSkills.filter(
+//     (skill) => {
+//       return skills.includes(skill);
+//     },
+//   );
 
-  const additionalRecommendations: string[] = recommendedSkills.filter(
-    (skill) => {
-      return !skills.includes(skill);
-    },
-  );
+//   const additionalRecommendations: string[] = recommendedSkills.filter(
+//     (skill) => {
+//       return !skills.includes(skill);
+//     },
+//   );
 
-  return {
-    suggestedSkillsToEnable,
-    additionalRecommendations,
-  };
-}
-
-class CommaSeparatedListOutputParser extends BaseOutputParser<string[]> {
-  getFormatInstructions(
-    options?: FormatInstructionsOptions | undefined,
-  ): string {
-    throw new Error('Method not implemented.');
-  }
-
-  async parse(text: string): Promise<string[]> {
-    return text.split(',').map((item) => item.trim());
-  }
-}
+//   return {
+//     suggestedSkillsToEnable,
+//     additionalRecommendations,
+//   };
+// }
 
 async function getRequiredSkillsFromJD(description: string) {
   const template = `You are a recruiter helping developers find jobs. A user will pass in a description, and you should extract the most relevant required technical skills from the description in a comma separated list. ONLY return a comma separated list, and nothing more. Only extract a maximum of 15 skills.`;
@@ -118,7 +101,7 @@ async function getRequiredSkillsFromJD(description: string) {
 
 async function getSkillsSuggestions(
   requiredSkills: string[],
-  currentSkills: string[],
+  currentSkills: string[]
 ) {
   const template = `You are a tech recruiter. The user will pass you a currentSkills list and a requiredSkills list. Your task is to pick the items from the currentSkills list that match the requiredSkills list the most. Put the best matching skills at the top. You should return a comma separated list of the best matching skills from the currentSkills list. ONLY return a comma separated list, and nothing more. Only return a maximum of 15 skills. Never return a skill that is not in the currentSkills list.`;
 
@@ -148,4 +131,14 @@ async function getSkillsSuggestions(
   });
 
   return result;
+}
+
+class CommaSeparatedListOutputParser extends BaseOutputParser<string[]> {
+  getFormatInstructions(): string {
+    throw new Error('Method not implemented.');
+  }
+
+  async parse(text: string): Promise<string[]> {
+    return await text.split(',').map((item) => item.trim());
+  }
 }

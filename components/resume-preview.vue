@@ -46,8 +46,8 @@
       <section class="grid gap-1">
         <h3>Skills</h3>
         <ul
-          class="flex flex-wrap gap-5"
           v-if="resume?.skills?.length > 0"
+          class="flex flex-wrap gap-5"
         >
           <template
             v-for="skill in enabledSkills"
@@ -132,18 +132,16 @@
 
   const { resumePreview: resume } = useResumePreviewStore();
 
-  const enabledFirstJobAccomplishments = computed(
-    () =>
-      resume.jobs?.[0]?.accomplishments
-        .filter((a) => a.enabled)
-        .map((a) => a.title),
+  const enabledFirstJobAccomplishments = computed(() =>
+    resume.jobs?.[0]?.accomplishments
+      .filter((a) => a.enabled)
+      .map((a) => a.title)
   );
 
-  const enabledSecondJobAccomplishments = computed(
-    () =>
-      resume.jobs?.[1]?.accomplishments
-        .filter((a) => a.enabled)
-        .map((a) => a.title),
+  const enabledSecondJobAccomplishments = computed(() =>
+    resume.jobs?.[1]?.accomplishments
+      .filter((a) => a.enabled)
+      .map((a) => a.title)
   );
 
   const enabledSkills = computed(() => {

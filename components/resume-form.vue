@@ -101,7 +101,7 @@
       message.success('Resume Saved');
     } catch (error) {
       message.error('Something went wrong');
-      console.log({ error });
+      throw createError('Failed to save resume settings');
     }
   };
 </script>
