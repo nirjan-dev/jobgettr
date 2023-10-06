@@ -16,6 +16,7 @@
   import { NMessageProvider } from 'naive-ui';
 </script>
 
+<!-- eslint-disable-next-line vue-scoped-css/enforce-style-type -->
 <style>
   body {
     @apply font-sans leading-6;

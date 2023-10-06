@@ -4,39 +4,42 @@ import {
   ILearningListItemWithoutJobs,
 } from 'types/IlearningListItem';
 
-export const useLearningListStore = defineStore('learningList', () => {
-  const learningList: Ref<IlearningListItem[]> = useLocalStorage(
-    'pinia/learningList/learningList',
-    [],
-  );
-
-  const addItemToLearningList = (newItem: ILearningListItemWithoutJobs) => {
-    const existingItem = learningList.value.find(
-      (item) => item.skill === newItem.skill,
+export const useLearningListStore = defineStore(
+  'learningList',
+  function learningListStore() {
+    const learningList: Ref<IlearningListItem[]> = useLocalStorage(
+      'pinia/learningList/learningList',
+      [],
     );
 
-    if (existingItem) {
-      existingItem.jobs++;
-      return;
+    function addItemToLearningList(newItem: ILearningListItemWithoutJobs) {
+      const existingItem = learningList.value.find(
+        function findExistingItem(item) {
+          return item.skill === newItem.skill;
+        },
+      );
+
+      if (existingItem) {
+        existingItem.jobs++;
+        return;
+      }
+
+      learningList.value.push({
+        skill: newItem.skill,
+        jobs: 1,
+      });
     }
 
-    learningList.value.push({
-      skill: newItem.skill,
-      jobs: 1,
-    });
-  };
+    function addMultipleItemsToLearningList(
+      newItems: ILearningListItemWithoutJobs[],
+    ) {
+      newItems.forEach(addItemToLearningList);
+    }
 
-  const addMultipleItemsToLearningList = (
-    newItems: ILearningListItemWithoutJobs[],
-  ) => {
-    newItems.forEach((item) => {
-      addItemToLearningList(item);
-    });
-  };
-
-  return {
-    learningList: skipHydrate(learningList),
-    addItemToLearningList,
-    addMulitpleItemsToLearningList: addMultipleItemsToLearningList,
-  };
-});
+    return {
+      learningList: skipHydrate(learningList),
+      addItemToLearningList,
+      addMulitpleItemsToLearningList: addMultipleItemsToLearningList,
+    };
+  },
+);

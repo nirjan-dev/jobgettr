@@ -2,38 +2,44 @@ import { ChatOpenAI } from 'langchain/chat_models/openai';
 import { ChatPromptTemplate } from 'langchain/prompts';
 import { BaseOutputParser } from 'langchain/schema/output_parser';
 
-export default defineEventHandler(async (event) => {
-  const { url } = getQuery(event);
-  const body = await readBody(event);
-  const jobDescription = body.jobDescription;
-  const skills = body.skills;
+export default defineEventHandler(
+  async function resumeSuggestionsEndpoint(event) {
+    const { url } = getQuery(event);
+    const body = await readBody(event);
+    const jobDescription = body.jobDescription;
+    const skills = body.skills;
 
-  const requiredSkills = await getRequiredSkillsFromJD(jobDescription);
+    const requiredSkills = await getRequiredSkillsFromJD(jobDescription);
 
-  const skillsRecommendations = await getSkillsSuggestions(
-    requiredSkills,
-    skills,
-  );
+    const skillsRecommendations = await getSkillsSuggestions(
+      requiredSkills,
+      skills,
+    );
 
-  const suggestedSkillsToEnable = skillsRecommendations.filter((skill) => {
-    return skills.includes(skill);
-  });
+    const suggestedSkillsToEnable = skillsRecommendations.filter(
+      function getOnlyListedSkills(skill) {
+        return skills.includes(skill);
+      },
+    );
 
-  const additionalRecommendations = skillsRecommendations.filter((skill) => {
-    return !skills.includes(skill);
-  });
+    const additionalRecommendations = skillsRecommendations.filter(
+      function getNonListedSkills(skill) {
+        return !skills.includes(skill);
+      },
+    );
 
-  // enable this for testing
-  // const { suggestedSkillsToEnable, additionalRecommendations } =
-  //   getMockValues(skills);
+    // enable this for testing
+    // const { suggestedSkillsToEnable, additionalRecommendations } =
+    //   getMockValues(skills);
 
-  return {
-    suggestedSkillsToEnable,
-    additionalRecommendations,
-    url,
-    jobDescription,
-  };
-});
+    return {
+      suggestedSkillsToEnable,
+      additionalRecommendations,
+      url,
+      jobDescription,
+    };
+  },
+);
 
 // function getMockValues(skills: string[]) {
 //   const randomSkills = skills.filter((skill: string) => Math.random() < 0.5);
@@ -92,11 +98,9 @@ async function getRequiredSkillsFromJD(description: string) {
 
   const chain = chatPrompt.pipe(model).pipe(parser);
 
-  const result = await chain.invoke({
+  return await chain.invoke({
     description,
   });
-
-  return result;
 }
 
 async function getSkillsSuggestions(
@@ -125,12 +129,10 @@ async function getSkillsSuggestions(
 
   const chain = chatPrompt.pipe(model).pipe(parser);
 
-  const result = await chain.invoke({
+  return await chain.invoke({
     currentSkills: currentSkills.join(','),
     requiredSkills: requiredSkills.join(','),
   });
-
-  return result;
 }
 
 class CommaSeparatedListOutputParser extends BaseOutputParser<string[]> {
@@ -139,6 +141,8 @@ class CommaSeparatedListOutputParser extends BaseOutputParser<string[]> {
   }
 
   async parse(text: string): Promise<string[]> {
-    return await text.split(',').map((item) => item.trim());
+    return await text.split(',').map(function trimItem(item) {
+      return item.trim();
+    });
   }
 }
