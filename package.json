@@ -12,6 +12,8 @@
     "lint-staged": "lint-staged"
   },
   "devDependencies": {
+    "@commitlint/cli": "^17.7.2",
+    "@commitlint/config-conventional": "^17.7.0",
     "@element-plus/nuxt": "^1.0.5",
     "@nuxt/devtools": "latest",
     "@nuxtjs/eslint-config-typescript": "^12.1.0",
