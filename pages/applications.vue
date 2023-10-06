@@ -10,7 +10,7 @@
       <div
         v-for="application in applications"
         :key="application.applicationLink"
-        class="border-solid px-3 py-4 my-3 rounded-lg border-b-2 border-gray-700"
+        class="my-3 rounded-lg border-b-2 border-solid border-gray-700 px-3 py-4"
       >
         <h2 class="mb-2">{{ application.company }}</h2>
 

@@ -1,6 +1,6 @@
 <template>
-  <div class="p-3 max-w-3xl mx-auto">
-    <h2 class="text-2xl font-bold mb-4">Resume Settings</h2>
+  <div class="mx-auto max-w-3xl p-3">
+    <h2 class="mb-4 text-2xl font-bold">Resume Settings</h2>
     <n-form
       ref="formRef"
       :model="formValue"

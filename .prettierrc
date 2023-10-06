@@ -4,5 +4,6 @@
   "arrowParens": "always",
   "vueIndentScriptAndStyle": true,
   "bracketSameLine": false,
-  "singleAttributePerLine": true
+  "singleAttributePerLine": true,
+  "plugins": ["prettier-plugin-tailwindcss"]
 }

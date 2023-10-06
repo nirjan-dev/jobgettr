@@ -1,7 +1,7 @@
 <template>
-  <div class="mx-auto py-2 px-6">
+  <div class="mx-auto px-6 py-2">
     <div class="grid">
-      <h2 class="text-4xl font-bold text-center">Nirjan Khadka</h2>
+      <h2 class="text-center text-4xl font-bold">Nirjan Khadka</h2>
       <h3 class="text-center text-xl">{{ resume.role }}</h3>
       <ul class="flex flex-wrap justify-center gap-4">
         <li>
@@ -65,7 +65,7 @@
         <article>
           <h4 class="text-xl">
             {{ resume.role }}
-            <span class="text-base float-right">Dec 2021 - Present</span>
+            <span class="float-right text-base">Dec 2021 - Present</span>
           </h4>
           <h5 class="text-lg">Gfinity PLC</h5>
 
@@ -82,7 +82,7 @@
         <article>
           <h4 class="text-xl">
             Frontend Developer
-            <span class="text-base float-right"
+            <span class="float-right text-base"
               >Aug 2019 - Dec 2021, 2yrs 4mos</span
             >
           </h4>
@@ -157,7 +157,7 @@
   }
 
   h3 {
-    @apply text-2xl font-bold mb-2;
+    @apply mb-2 text-2xl font-bold;
   }
 
   section h3 {

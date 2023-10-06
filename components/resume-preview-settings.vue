@@ -1,6 +1,6 @@
 <template>
-  <div class="p-3 max-w-3xl mx-auto print:hidden">
-    <h2 class="text-2xl font-bold mb-4">Resume Preview Settings</h2>
+  <div class="mx-auto max-w-3xl p-3 print:hidden">
+    <h2 class="mb-4 text-2xl font-bold">Resume Preview Settings</h2>
 
     <div class="mb-4">
       <n-form
@@ -172,7 +172,7 @@
           <li
             v-for="skill in recommendedSkills"
             :key="skill.skill"
-            class="grid grid-cols-5 gap-2 mb-2"
+            class="mb-2 grid grid-cols-5 gap-2"
           >
             <div class="w-64">{{ skill.skill }}</div>
             <n-select

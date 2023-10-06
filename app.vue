@@ -1,7 +1,7 @@
 <template>
   <div>
     <n-message-provider>
-      <nav class="print:hidden flex justify-center items-center gap-4 py-4">
+      <nav class="flex items-center justify-center gap-4 py-4 print:hidden">
         <NuxtLink to="/">Home</NuxtLink>
         <NuxtLink to="/settings">Settings</NuxtLink>
         <NuxtLink to="/applications">Applications</NuxtLink>
@@ -27,7 +27,7 @@
   h4,
   h5,
   h6 {
-    @apply font-sans m-0 leading-4;
+    @apply m-0 font-sans leading-4;
   }
 
   ul {
