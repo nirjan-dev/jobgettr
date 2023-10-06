@@ -227,6 +227,9 @@
   const isLoadingSuggestions = ref(false);
   const formValue = ref(resumePreview);
   const showSuggestionsModel = ref(false);
+  const LEARNING_LIST_ACTION = 'add to learning list';
+  const ENABLE_ACTION = 'enable';
+  const IGNORE_ACTION = 'ignore';
   const jobApplicationFormValue = ref({
     company: '',
     resumeDetails: '',
@@ -239,7 +242,10 @@
 
   interface ISuggestedSkill {
     skill: string;
-    action: 'enable' | 'add to learning list' | 'ignore';
+    action:
+      | typeof ENABLE_ACTION
+      | typeof LEARNING_LIST_ACTION
+      | typeof IGNORE_ACTION;
   }
 
   const suggestedSkillActions: {
@@ -247,39 +253,60 @@
     value: ISuggestedSkill['action'];
   }[] = [
     {
-      label: 'enable',
-      value: 'enable',
+      label: ENABLE_ACTION,
+      value: ENABLE_ACTION,
     },
     {
-      label: 'add to learning list',
-      value: 'add to learning list',
+      label: LEARNING_LIST_ACTION,
+      value: LEARNING_LIST_ACTION,
     },
     {
-      label: 'ignore',
-      value: 'ignore',
+      label: IGNORE_ACTION,
+      value: IGNORE_ACTION,
     },
   ];
   const recommendedSkills = ref<ISuggestedSkill[]>([]);
 
   const message = useMessage();
 
-  const enabledSkills = computed(() => {
+  const enabledSkills = computed(function computedEnabledSkills() {
     return resumePreview.skills
-      .filter((skill) => skill.enabled)
-      .map((skills) => skills.title);
+      .filter(function getEnabledSkills(skill) {
+        return skill.enabled;
+      })
+      .map(function getTitle(skills) {
+        return skills.title;
+      });
   });
 
-  const enabledFirstJobAccomplishments = computed(() => {
-    return resumePreview?.jobs[0]?.accomplishments
-      .filter((accomplishment) => accomplishment.enabled)
-      .map((accomplishment) => accomplishment.title);
-  });
+  function getEnabledAccomplishments(accomplishment: {
+    title: string;
+    enabled: boolean;
+  }) {
+    return accomplishment.enabled;
+  }
+  function getAccomplishmentTitle(accomplishment: {
+    title: string;
+    enabled: boolean;
+  }) {
+    return accomplishment.title;
+  }
 
-  const enabledSecondJobAccomplishments = computed(() => {
-    return resumePreview?.jobs[1]?.accomplishments
-      .filter((accomplishment) => accomplishment.enabled)
-      .map((accomplishment) => accomplishment.title);
-  });
+  const enabledFirstJobAccomplishments = computed(
+    function computedEnabledFirstJobAccomplishments() {
+      return resumePreview?.jobs[0]?.accomplishments
+        .filter(getEnabledAccomplishments)
+        .map(getAccomplishmentTitle);
+    },
+  );
+
+  const enabledSecondJobAccomplishments = computed(
+    function computedEnabledSecondJobAccomplishments() {
+      return resumePreview?.jobs[1]?.accomplishments
+        .filter(getEnabledAccomplishments)
+        .map(getAccomplishmentTitle);
+    },
+  );
 
   function applyForJob() {
     if (window) {
@@ -302,7 +329,9 @@
 
   async function getResumeSuggestions() {
     const jobDescription = jobApplicationFormValue.value.jobDescription;
-    const skills = formValue.value.skills.map((skill) => skill.title);
+    const skills = formValue.value.skills.map(function getSkillTitle(skill) {
+      return skill.title;
+    });
 
     if (!jobDescription) {
       message.error('Please enter a job description');
@@ -329,50 +358,57 @@
     isLoadingSuggestions.value = false;
 
     recommendedSkills.value =
-      data.value?.suggestedSkillsToEnable.map((skill) => ({
-        skill,
-        action: 'enable',
-      })) ?? [];
+      data.value?.suggestedSkillsToEnable.map(
+        function getRecommendedSkills(skill) {
+          return {
+            skill,
+            action: ENABLE_ACTION,
+          };
+        },
+      ) ?? [];
 
     const additionalSkills: ISuggestedSkill[] =
-      data.value?.additionalRecommendations.map((skill) => {
-        return {
-          skill,
-          action: 'add to learning list',
-        };
-      }) ?? [];
+      data.value?.additionalRecommendations.map(
+        function getAdditionalSkills(skill) {
+          return {
+            skill,
+            action: LEARNING_LIST_ACTION,
+          };
+        },
+      ) ?? [];
 
     recommendedSkills.value = [...recommendedSkills.value, ...additionalSkills];
 
     showSuggestionsModel.value = true;
-
-    // message.info(
-    //   "Following skills are suggested for this job: " +
-    //     data.value?.finalSkillsSuggestion.join(", "),
-    //   {
-    //     closable: true,
-    //     duration: 60000,
-    //   }
-    // );
   }
 
   function applySuggestions() {
     const skillsToEnable = recommendedSkills.value
-      .filter((skill) => skill.action === 'enable')
-      .map((skill) => skill.skill);
+      .filter(function filterEnabledSkills(skill) {
+        return skill.action === ENABLE_ACTION;
+      })
+      .map(function getSkill(skill) {
+        return skill.skill;
+      });
 
     const skillsToAddToLearingList = recommendedSkills.value
-      .filter((skill) => skill.action === 'add to learning list')
-      .map((skill) => ({ skill: skill.skill }));
+      .filter(function getLearningListSkills(skill) {
+        return skill.action === LEARNING_LIST_ACTION;
+      })
+      .map(function getSkill(skill) {
+        return { skill: skill.skill };
+      });
 
-    resumePreview.skills = resumePreview.skills.map((skill) => {
-      if (skillsToEnable.includes(skill.title)) {
-        skill.enabled = true;
-      } else {
-        skill.enabled = false;
-      }
-      return skill;
-    });
+    resumePreview.skills = resumePreview.skills.map(
+      function updatePreviewSkills(skill) {
+        if (skillsToEnable.includes(skill.title)) {
+          skill.enabled = true;
+        } else {
+          skill.enabled = false;
+        }
+        return skill;
+      },
+    );
 
     addMultipleItemsToLearningList(skillsToAddToLearingList);
 

@@ -79,7 +79,7 @@
 
   const message = useMessage();
 
-  const onCreateJob = () => {
+  function onCreateJob() {
     return {
       accomplishments: [
         {
@@ -87,15 +87,15 @@
         },
       ],
     };
-  };
+  }
 
-  const onCreateAccomplishments = () => {
+  function onCreateAccomplishments() {
     return {
       title: '',
     };
-  };
+  }
 
-  const onSubmit = () => {
+  function onSubmit() {
     try {
       setResume(formValue.value);
       message.success('Resume Saved');
@@ -103,5 +103,5 @@
       message.error('Something went wrong');
       throw createError('Failed to save resume settings');
     }
-  };
+  }
 </script>

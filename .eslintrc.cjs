@@ -19,5 +19,6 @@ module.exports = {
     'no-loops/no-loops': 2,
     'write-good-comments/write-good-comments': 'warn',
     'no-secrets/no-secrets': 'error',
+    'func-names': ['error', 'as-needed'],
   },
 };

@@ -132,22 +132,39 @@
 
   const { resumePreview: resume } = useResumePreviewStore();
 
+  function getEnabledAccomplishments(accomplishment: {
+    title: string;
+    enabled: boolean;
+  }) {
+    return accomplishment.enabled;
+  }
+  function getAccomplishmentTitle(accomplishment: {
+    title: string;
+    enabled: boolean;
+  }) {
+    return accomplishment.title;
+  }
+
   const enabledFirstJobAccomplishments = computed(
-    () =>
-      resume.jobs?.[0]?.accomplishments
-        .filter((a) => a.enabled)
-        .map((a) => a.title),
+    function computedEnabledFirstJobAccomplishments() {
+      return resume.jobs?.[0]?.accomplishments
+        .filter(getEnabledAccomplishments)
+        .map(getAccomplishmentTitle);
+    },
   );
 
   const enabledSecondJobAccomplishments = computed(
-    () =>
-      resume.jobs?.[1]?.accomplishments
-        .filter((a) => a.enabled)
-        .map((a) => a.title),
+    function computedEnabledSecondJobAccomplishments() {
+      return resume.jobs?.[1]?.accomplishments
+        .filter(getEnabledAccomplishments)
+        .map(getAccomplishmentTitle);
+    },
   );
 
-  const enabledSkills = computed(() => {
-    return resume.skills?.filter((s) => s.enabled);
+  const enabledSkills = computed(function computedEnabledSKills() {
+    return resume.skills?.filter(function getEnabled(s) {
+      return s.enabled;
+    });
   });
 </script>
 
