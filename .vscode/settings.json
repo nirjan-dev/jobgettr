@@ -1,0 +1,6 @@
+{
+  "stylelint.validate": ["css", "less", "postcss", "vue"],
+  "editor.codeActionsOnSave": {
+    "source.fixAll.stylelint": true
+  }
+}
