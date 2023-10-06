@@ -1,19 +1,6 @@
 import { defineStore, skipHydrate } from 'pinia';
+import { IResumePreview } from 'types/IResumePreview';
 import { useResumeStore } from '~/store/resumeStore';
-
-interface IResumePreview {
-  skills: {
-    title: string;
-    enabled: boolean;
-  }[];
-  jobs: {
-    accomplishments: {
-      title: string;
-      enabled: boolean;
-    }[];
-  }[];
-  role: string;
-}
 
 export const useResumePreviewStore = defineStore('resumePreview', () => {
   const { resume } = useResumeStore();

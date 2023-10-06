@@ -1,14 +1,6 @@
 import { defineStore, skipHydrate } from 'pinia';
 import { useLocalStorage } from '@vueuse/core';
-
-interface IApplication {
-  resumeDetails: string;
-  company: string;
-  applicationLink: string;
-  stage: string;
-  notes: string;
-  dateApplied: string;
-}
+import { IApplication } from 'types/IApplication';
 
 export const useApplicationsStore = defineStore('application', () => {
   const applications: Ref<IApplication[]> = useLocalStorage(

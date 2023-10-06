@@ -1,12 +1,8 @@
 import { defineStore, skipHydrate } from 'pinia';
-
-interface IlearningListItem {
-  skill: string;
-  jobs: number;
-}
-
-interface ILearningListItemWithoutJobs
-  extends Omit<IlearningListItem, 'jobs'> {}
+import {
+  IlearningListItem,
+  ILearningListItemWithoutJobs,
+} from 'types/IlearningListItem';
 
 export const useLearningListStore = defineStore('learningList', () => {
   const learningList: Ref<IlearningListItem[]> = useLocalStorage(

@@ -1,15 +1,6 @@
 import { defineStore, skipHydrate } from 'pinia';
 import { useLocalStorage } from '@vueuse/core';
-
-interface IResume {
-  skills: string[];
-  jobs: {
-    accomplishments: {
-      title: string;
-    }[];
-  }[];
-  role: string;
-}
+import { IResume } from 'types/IResume';
 
 export const useResumeStore = defineStore('resume', () => {
   const resume = useLocalStorage('pinia/resume/resume', {
