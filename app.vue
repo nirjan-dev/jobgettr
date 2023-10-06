@@ -36,6 +36,6 @@
   }
 
   a {
-    @apply text-blue-500 no-underline;
+    @apply inline text-blue-500 no-underline;
   }
 </style>
