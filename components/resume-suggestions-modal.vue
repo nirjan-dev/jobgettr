@@ -43,16 +43,19 @@
   import { useResumePreviewStore } from '~/store/resumePreviewStore';
   import { useLearningListStore } from '~/store/learningListStore.ts';
   import {
+    ADD_TO_RESUME,
     ENABLE_ACTION,
     IGNORE_ACTION,
     ISuggestedSkill,
     LEARNING_LIST_ACTION,
   } from '~/types/ISuggestedSkill';
+  import { useResumeStore } from '~/store/resumeStore';
 
   const message = useMessage();
   const { addMulitpleItemsToLearningList: addMultipleItemsToLearningList } =
     useLearningListStore();
   const { resumePreview } = useResumePreviewStore();
+  const { addSkillsToResume } = useResumeStore();
 
   const props = defineProps<{
     recommendedSkills: ISuggestedSkill[];
@@ -81,6 +84,10 @@
       label: IGNORE_ACTION,
       value: IGNORE_ACTION,
     },
+    {
+      label: ADD_TO_RESUME,
+      value: ADD_TO_RESUME,
+    },
   ];
 
   const emit = defineEmits(['close']);
@@ -106,6 +113,14 @@
         return { skill: skill.skill };
       });
 
+    const skillsToAddToResume = props.recommendedSkills
+      .filter(function getResumeSkills(skill) {
+        return skill.action === ADD_TO_RESUME;
+      })
+      .map(function getSkill(skill) {
+        return skill.skill;
+      });
+
     resumePreview.skills = resumePreview.skills.map(
       function updatePreviewSkills(skill) {
         if (skillsToEnable.includes(skill.title)) {
@@ -116,6 +131,8 @@
         return skill;
       },
     );
+
+    addSkillsToResume(skillsToAddToResume);
 
     addMultipleItemsToLearningList(skillsToAddToLearningList);
 

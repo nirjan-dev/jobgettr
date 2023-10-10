@@ -22,11 +22,11 @@ export default defineEventHandler(
       },
     );
 
-    const additionalRecommendations = requiredSkills.filter(
-      function getNonListedSkills(skill) {
+    const additionalRecommendations = requiredSkills
+      .filter(function getNonListedSkills(skill) {
         return !skills.includes(skill);
-      },
-    );
+      })
+      .slice(0, 5);
 
     // enable this for testing
     // const { suggestedSkillsToEnable, additionalRecommendations } =
@@ -93,6 +93,7 @@ async function getRequiredSkillsFromJD(description: string) {
     maxTokens: 1000,
     temperature: 0,
     modelName: 'gpt-3.5-turbo',
+    verbose: true,
   });
   const parser = new CommaSeparatedListOutputParser();
 
@@ -124,6 +125,7 @@ async function getSkillsSuggestions(
     maxTokens: 1000,
     temperature: 0,
     modelName: 'gpt-3.5-turbo',
+    verbose: true,
   });
   const parser = new CommaSeparatedListOutputParser();
 

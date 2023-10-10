@@ -22,8 +22,8 @@
   import { NButton, useMessage, NFormItem, NInput } from 'naive-ui';
   import {
     ENABLE_ACTION,
+    IGNORE_ACTION,
     ISuggestedSkill,
-    LEARNING_LIST_ACTION,
   } from '~/types/ISuggestedSkill';
   import { useResumePreviewStore } from '~/store/resumePreviewStore';
 
@@ -71,7 +71,7 @@
         function getAdditionalSkills(skill) {
           return {
             skill,
-            action: LEARNING_LIST_ACTION,
+            action: IGNORE_ACTION,
           };
         },
       ) ?? [];
