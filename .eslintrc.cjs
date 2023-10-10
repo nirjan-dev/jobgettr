@@ -6,6 +6,7 @@ module.exports = {
     'plugin:vue-scoped-css/vue3-recommended',
     'plugin:@getify/proper-arrows/getify-says',
     'plugin:security/recommended',
+    'plugin:vuejs-accessibility/recommended',
   ],
   plugins: [
     'sonarjs',
@@ -14,6 +15,7 @@ module.exports = {
     'no-loops',
     'write-good-comments',
     'no-secrets',
+    'vuejs-accessibility',
   ],
   rules: {
     'no-loops/no-loops': 2,
