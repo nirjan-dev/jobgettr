@@ -130,42 +130,12 @@
 <script setup lang="ts">
   import { useResumePreviewStore } from '~/store/resumePreviewStore';
 
-  const { resumePreview: resume } = useResumePreviewStore();
-
-  function getEnabledAccomplishments(accomplishment: {
-    title: string;
-    enabled: boolean;
-  }) {
-    return accomplishment.enabled;
-  }
-  function getAccomplishmentTitle(accomplishment: {
-    title: string;
-    enabled: boolean;
-  }) {
-    return accomplishment.title;
-  }
-
-  const enabledFirstJobAccomplishments = computed(
-    function computedEnabledFirstJobAccomplishments() {
-      return resume.jobs?.[0]?.accomplishments
-        .filter(getEnabledAccomplishments)
-        .map(getAccomplishmentTitle);
-    },
-  );
-
-  const enabledSecondJobAccomplishments = computed(
-    function computedEnabledSecondJobAccomplishments() {
-      return resume.jobs?.[1]?.accomplishments
-        .filter(getEnabledAccomplishments)
-        .map(getAccomplishmentTitle);
-    },
-  );
-
-  const enabledSkills = computed(function computedEnabledSKills() {
-    return resume.skills?.filter(function getEnabled(s) {
-      return s.enabled;
-    });
-  });
+  const {
+    enabledFirstJobAccomplishments,
+    enabledSecondJobAccomplishments,
+    enabledSkills,
+    resumePreview: resume,
+  } = useResumePreviewStore();
 </script>
 
 <style scoped>

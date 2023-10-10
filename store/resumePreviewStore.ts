@@ -29,7 +29,27 @@ export const useResumePreviewStore = defineStore(
       }),
     });
 
-    //   const resumePreview = ref(null);
+    const enabledFirstJobAccomplishments = computed(
+      function computedEnabledFirstJobAccomplishments() {
+        return resumePreview.value.jobs?.[0]?.accomplishments
+          .filter(getEnabledAccomplishments)
+          .map(getAccomplishmentTitle);
+      },
+    );
+
+    const enabledSecondJobAccomplishments = computed(
+      function computedEnabledSecondJobAccomplishments() {
+        return resumePreview.value.jobs?.[1]?.accomplishments
+          .filter(getEnabledAccomplishments)
+          .map(getAccomplishmentTitle);
+      },
+    );
+
+    const enabledSkills = computed(function computedEnabledSKills() {
+      return resumePreview.value.skills?.filter(function getEnabled(s) {
+        return s.enabled;
+      });
+    });
 
     function setResumePreview(updatedResume: IResumePreview) {
       (resumePreview.value as unknown as IResumePreview) = updatedResume;
@@ -38,6 +58,22 @@ export const useResumePreviewStore = defineStore(
     return {
       resumePreview: skipHydrate(resumePreview),
       setResumePreview,
+      enabledFirstJobAccomplishments,
+      enabledSecondJobAccomplishments,
+      enabledSkills,
     };
   },
 );
+
+function getEnabledAccomplishments(accomplishment: {
+  title: string;
+  enabled: boolean;
+}) {
+  return accomplishment.enabled;
+}
+function getAccomplishmentTitle(accomplishment: {
+  title: string;
+  enabled: boolean;
+}) {
+  return accomplishment.title;
+}

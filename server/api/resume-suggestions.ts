@@ -22,7 +22,7 @@ export default defineEventHandler(
       },
     );
 
-    const additionalRecommendations = skillsRecommendations.filter(
+    const additionalRecommendations = requiredSkills.filter(
       function getNonListedSkills(skill) {
         return !skills.includes(skill);
       },
@@ -42,7 +42,7 @@ export default defineEventHandler(
 );
 
 // function getMockValues(skills: string[]) {
-//   const randomSkills = skills.filter((skill: string) => Math.random() < 0.5);
+//   const randomSkills = skills.filter(function getRandomSkill() { return  Math.random() < 0.5});
 
 //   const recommendedSkills: string[] = [
 //     ...randomSkills,
@@ -58,13 +58,13 @@ export default defineEventHandler(
 //   ];
 
 //   const suggestedSkillsToEnable: string[] = recommendedSkills.filter(
-//     (skill) => {
+//     function getIncludedSkill(skill)  {
 //       return skills.includes(skill);
 //     },
 //   );
 
 //   const additionalRecommendations: string[] = recommendedSkills.filter(
-//     (skill) => {
+//     function getNonIncludedSkill(skill)  {
 //       return !skills.includes(skill);
 //     },
 //   );
