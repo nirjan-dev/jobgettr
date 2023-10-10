@@ -64,9 +64,14 @@
 
   const showSuggestionsModel = ref(props.openModel);
 
-  watch(props, function watchOpenModel(props) {
-    showSuggestionsModel.value = props.openModel;
-  });
+  watch(
+    function getOpenModel() {
+      return props.openModel;
+    },
+    function watchOpenModel(openModel) {
+      showSuggestionsModel.value = openModel;
+    },
+  );
 
   const suggestedSkillActions: {
     label: ISuggestedSkill['action'];
