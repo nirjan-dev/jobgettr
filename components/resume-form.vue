@@ -8,6 +8,11 @@
       <n-form-item
         label="Role"
         path="role"
+        :rule="{
+          required: true,
+          message: 'Role is required',
+          trigger: 'blur',
+        }"
       >
         <n-input v-model:value="formValue.role"></n-input>
       </n-form-item>
@@ -36,8 +41,24 @@
                 #="{ index, value }"
               >
                 <div class="w-full">
-                  <n-form-item :path="`jobs.${index}.accomplishments`">
-                    <n-input v-model:value="value.title"></n-input>
+                  <n-form-item
+                    :rule="{
+                      required: true,
+                      validator: (rule, value) => {
+                        return value.length <= 100;
+                      },
+                      message:
+                        'Accomplishment cannot exceed 100 characters. Keep your accomplishments concise for a better resume.',
+                      trigger: ['input', 'blur'],
+                    }"
+                    :path="`jobs.${index}.accomplishments`"
+                  >
+                    <span class="mr-2"> {{ index + 1 }} </span>
+
+                    <n-input
+                      v-model:value="value.title"
+                      type="textarea"
+                    ></n-input>
                   </n-form-item>
                 </div>
               </n-dynamic-input>
@@ -95,7 +116,24 @@
     };
   }
 
+  function isAccomplishmentCountLessThanMinCount() {
+    const accomplishmentCountsPerJob = formValue.value.jobs.map(
+      function getAccomplishmentLength(job) {
+        return job.accomplishments.length;
+      },
+    );
+
+    return accomplishmentCountsPerJob.some(function checkMinCount(count) {
+      return count < 8;
+    });
+  }
+
   function onSubmit() {
+    if (isAccomplishmentCountLessThanMinCount()) {
+      message.error('All jobs must have the at least 8 accomplishments');
+      return;
+    }
+
     try {
       setResume(formValue.value);
       message.success('Resume Saved');
