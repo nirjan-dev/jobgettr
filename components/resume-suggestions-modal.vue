@@ -52,8 +52,7 @@
   import { useResumeStore } from '~/store/resumeStore';
 
   const message = useMessage();
-  const { addMulitpleItemsToLearningList: addMultipleItemsToLearningList } =
-    useLearningListStore();
+  const { addMultipleItemsToLearningList } = useLearningListStore();
   const { resumePreview } = useResumePreviewStore();
   const { addSkillsToResume } = useResumeStore();
 

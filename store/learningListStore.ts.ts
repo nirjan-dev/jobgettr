@@ -1,4 +1,4 @@
-import { defineStore, skipHydrate } from 'pinia';
+import { defineStore } from 'pinia';
 import {
   IlearningListItem,
   ILearningListItemWithoutJobs,
@@ -36,10 +36,30 @@ export const useLearningListStore = defineStore(
       newItems.forEach(addItemToLearningList);
     }
 
+    const sortedLearningList = computed(function getSortedLearningList() {
+      const learningListCopy = [...learningList.value];
+
+      return learningListCopy.sort(function sortComparison(a, b) {
+        return b.jobs - a.jobs;
+      });
+    });
+
+    function deleteItemFromLearningList(itemToDelete: IlearningListItem) {
+      const newLearningList = learningList.value.filter(
+        function filterOutDeletionItem(loopItem) {
+          return loopItem.skill !== itemToDelete.skill;
+        },
+      );
+
+      learningList.value = newLearningList;
+    }
+
     return {
-      learningList: skipHydrate(learningList),
+      learningList,
+      sortedLearningList,
       addItemToLearningList,
-      addMulitpleItemsToLearningList: addMultipleItemsToLearningList,
+      addMultipleItemsToLearningList,
+      deleteItemFromLearningList,
     };
   },
 );

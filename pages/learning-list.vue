@@ -1,18 +1,58 @@
 <template>
-  <div>
-    <ul v-if="learningList && learningList.length > 0">
+  <div class="mx-auto max-w-prose">
+    <ul v-if="sortedLearningList && sortedLearningList.length > 0">
       <li
-        v-for="listItem in learningList"
+        v-for="listItem in sortedLearningList"
         :key="listItem.skill"
       >
-        {{ listItem.skill }} - {{ listItem.jobs }}
+        <NCard>
+          <div class="flex items-center justify-between">
+            <p>
+              <span class="font-bold">{{ listItem.skill }}</span> mentioned in
+              <span class="font-bold">{{ listItem.jobs }}</span> jobs
+            </p>
+
+            <div>
+              <NButton
+                size="small"
+                type="success"
+                class="mr-2"
+                @click="addListItemAsSkill(listItem)"
+                >Add to Resume</NButton
+              >
+              <NButton
+                type="error"
+                size="small"
+                @click="
+                  deleteItemFromLearningList(listItem);
+                  message.success(
+                    `Deleted ${listItem.skill} from learning list`,
+                  );
+                "
+                >Delete</NButton
+              >
+            </div>
+          </div>
+        </NCard>
       </li>
     </ul>
   </div>
 </template>
 
 <script setup lang="ts">
+  import { NCard, NButton, useMessage } from 'naive-ui';
+  import { storeToRefs } from 'pinia';
+  import { useResumeStore } from '~/store/resumeStore';
   import { useLearningListStore } from '~/store/learningListStore.ts';
+  const { addSkillsToResume } = useResumeStore();
+  const { sortedLearningList } = storeToRefs(useLearningListStore());
+  const { deleteItemFromLearningList } = useLearningListStore();
+  const message = useMessage();
 
-  const { learningList } = useLearningListStore();
+  function addListItemAsSkill(listItem: { skill: string; jobs: number }) {
+    addSkillsToResume([listItem.skill]);
+    deleteItemFromLearningList(listItem);
+
+    message.success(`Added ${listItem.skill} to resume`);
+  }
 </script>
