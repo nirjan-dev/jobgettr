@@ -53,8 +53,8 @@
             v-for="skill in enabledSkills"
             :key="skill.title"
           >
-            <li :v-if="skill.enabled">
-              {{ skill.title }}
+            <li :v-if="skill">
+              {{ skill }}
             </li>
           </template>
         </ul>
@@ -128,6 +128,7 @@
 </template>
 
 <script setup lang="ts">
+  import { storeToRefs } from 'pinia';
   import { useResumePreviewStore } from '~/store/resumePreviewStore';
 
   const {
@@ -135,7 +136,7 @@
     enabledSecondJobAccomplishments,
     enabledSkills,
     resumePreview: resume,
-  } = useResumePreviewStore();
+  } = storeToRefs(useResumePreviewStore());
 </script>
 
 <style scoped>

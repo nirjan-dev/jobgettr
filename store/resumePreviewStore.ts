@@ -46,9 +46,13 @@ export const useResumePreviewStore = defineStore(
     );
 
     const enabledSkills = computed(function computedEnabledSKills() {
-      return resumePreview.value.skills?.filter(function getEnabled(s) {
-        return s.enabled;
-      });
+      return resumePreview.value.skills
+        ?.filter(function getEnabled(s) {
+          return s.enabled;
+        })
+        .map(function getSkillTitle(skill) {
+          return skill.title;
+        });
     });
 
     function setResumePreview(updatedResume: IResumePreview) {
