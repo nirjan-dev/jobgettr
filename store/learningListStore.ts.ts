@@ -3,12 +3,15 @@ import {
   IlearningListItem,
   ILearningListItemWithoutJobs,
 } from 'types/IlearningListItem';
+import { storePrefix } from 'types/storePrefix';
+
+const prefix: storePrefix = 'NK13_JOB_SEARCH_HELPER';
 
 export const useLearningListStore = defineStore(
   'learningList',
   function learningListStore() {
     const learningList: Ref<IlearningListItem[]> = useLocalStorage(
-      'pinia/learningList/learningList',
+      `${prefix}_learningList`,
       [],
     );
 

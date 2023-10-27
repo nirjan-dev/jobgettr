@@ -1,9 +1,12 @@
 import { defineStore, skipHydrate } from 'pinia';
 import { IResumePreview } from 'types/IResumePreview';
+import { storePrefix } from 'types/storePrefix';
 import { useResumeStore } from '~/store/resumeStore';
 
+const prefix: storePrefix = 'NK13_JOB_SEARCH_HELPER';
+
 export const useResumePreviewStore = defineStore(
-  'resumePreview',
+  `${prefix}_resumePreview`,
   function getResumePreviewStore() {
     const { resume } = useResumeStore();
 

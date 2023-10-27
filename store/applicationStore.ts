@@ -1,12 +1,15 @@
 import { defineStore, skipHydrate } from 'pinia';
 import { useLocalStorage } from '@vueuse/core';
 import { IApplication } from 'types/IApplication';
+import { storePrefix } from 'types/storePrefix';
+
+const prefix: storePrefix = 'NK13_JOB_SEARCH_HELPER';
 
 export const useApplicationsStore = defineStore(
   'application',
   function applicationStore() {
     const applications: Ref<IApplication[]> = useLocalStorage(
-      'pinia/application/applications',
+      `${prefix}_applications`,
       [],
     );
 

@@ -1,9 +1,11 @@
 import { defineStore, skipHydrate } from 'pinia';
 import { useLocalStorage } from '@vueuse/core';
 import { IResume } from 'types/IResume';
+import { storePrefix } from 'types/storePrefix';
+const prefix: storePrefix = 'NK13_JOB_SEARCH_HELPER';
 
 export const useResumeStore = defineStore('resume', function getResumeStore() {
-  const resume: Ref<IResume> = useLocalStorage('pinia/resume/resume', {
+  const resume: Ref<IResume> = useLocalStorage(`${prefix}_resume`, {
     skills: [],
     jobs: [
       {
