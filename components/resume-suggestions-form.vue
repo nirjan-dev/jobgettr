@@ -26,6 +26,7 @@
     ISuggestedSkill,
   } from '~/types/ISuggestedSkill';
   import { useResumePreviewStore } from '~/store/resumePreviewStore';
+  import { IResumeSuggestionsBody } from 'types/IResumeSuggestionsBody';
 
   const emit = defineEmits(['recommendedSkillsLoaded']);
 
@@ -81,15 +82,33 @@
     emit('recommendedSkillsLoaded', recommendedSkills.value);
   }
 
+  const allAccomplishments = computed(function getAllAccomplishments() {
+    const accomplishments: string[][] = [];
+
+    resumePreview.jobs.forEach(function loopOverJobs(job) {
+      const accomplishMentsForThisJob = job.accomplishments.map(
+        function getAccomplishmentTitle(accomplishment) {
+          return accomplishment.title;
+        },
+      );
+      accomplishments.push(accomplishMentsForThisJob);
+    });
+
+    return accomplishments;
+  });
+
   async function fetchResumeSuggestions() {
     isLoadingSuggestions.value = true;
 
+    const endpointBody: IResumeSuggestionsBody = {
+      jobDescription: jobDescription.value,
+      skills: skills.value,
+      accomplishments: allAccomplishments.value,
+    };
+
     const { data } = await useFetch('/api/resume-suggestions', {
       method: 'POST',
-      body: {
-        jobDescription,
-        skills,
-      },
+      body: endpointBody,
     });
 
     isLoadingSuggestions.value = false;

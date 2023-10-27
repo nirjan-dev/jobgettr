@@ -1,11 +1,11 @@
 import { ChatOpenAI } from 'langchain/chat_models/openai';
 import { ChatPromptTemplate } from 'langchain/prompts';
 import { BaseOutputParser } from 'langchain/schema/output_parser';
+import { IResumeSuggestionsBody } from '~/types/IResumeSuggestionsBody';
 
 export default defineEventHandler(
   async function resumeSuggestionsEndpoint(event) {
-    const { url } = getQuery(event);
-    const body = await readBody(event);
+    const body = await readBody<IResumeSuggestionsBody>(event);
     const jobDescription = body.jobDescription;
     const skills = body.skills;
     const accomplishments = body.accomplishments;
@@ -30,8 +30,8 @@ export default defineEventHandler(
       .slice(0, 5);
 
     const suggestedAccomplishments = await getAccomplishmentSuggestionsFromJD(
-      accomplishments,
       jobDescription,
+      accomplishments,
     );
 
     // enable this for testing
@@ -41,8 +41,6 @@ export default defineEventHandler(
     return {
       suggestedSkillsToEnable,
       additionalRecommendations,
-      url,
-      jobDescription,
       suggestedAccomplishments,
     };
   },
@@ -84,17 +82,32 @@ export default defineEventHandler(
 
 async function getAccomplishmentSuggestionsFromJD(
   description: string,
+  accomplishments: string[][],
+) {
+  const promises = accomplishments.map(
+    function getAccomplishmentSuggestion(accomplishment) {
+      return getAccomplishmentSuggestionFromOneSet(description, accomplishment);
+    },
+  );
+
+  return await Promise.all(promises);
+}
+
+async function getAccomplishmentSuggestionFromOneSet(
+  description: string,
   accomplishments: string[],
 ) {
-  const template = `You are a tech recruiter helping people improve their resumes. You will be given a list of job accomplishments to include in a resume and the job description for a role. Only include the accomplishments that are relevant to the role. Return a comma separated list of the most relevant accomplishments. ONLY return a comma separated list, and nothing more. Only return a maximum of 12 accomplishments. Never return an accomplishment that is not in the list of accomplishments.`;
+  const template = `You are a hiring manager reviewing a candidate's resume. You will be given a list of job accomplishments to include in a resume and the job description for a role. Each accomplishment will only be separated by " --- ". Only include the accomplishments that are relevant to the role. Return a list of the relevant accomplishments. ONLY return a list separated by a " --- ", and nothing more. Return a maximum of 6 accomplishments. Never return an accomplishment that is not in the list.`;
 
-  const humanTemplate = '{accomplishments} {description}';
+  const humanTemplate = '{accomplishments} {jobDescription}';
 
-  const chain = createLangChain(template, humanTemplate);
+  const parser = new DashSeparatedListOutputParser();
+
+  const chain = createLangChain(template, humanTemplate, parser);
 
   return await chain.invoke({
-    accomplishments: accomplishments.join(','),
-    description,
+    accomplishments: accomplishments.join(' --- '),
+    jobDescription: description,
   });
 }
 
@@ -126,7 +139,11 @@ async function getSkillsSuggestions(
   });
 }
 
-function createLangChain(systemTemplate: string, humanTemplate: string) {
+function createLangChain(
+  systemTemplate: string,
+  humanTemplate: string,
+  parser?: BaseOutputParser<string[]>,
+) {
   /**
    * Chat prompt for generating comma-separated lists. It combines the system
    * template and the human template.
@@ -142,7 +159,7 @@ function createLangChain(systemTemplate: string, humanTemplate: string) {
     modelName: 'gpt-3.5-turbo',
     verbose: true,
   });
-  const parser = new CommaSeparatedListOutputParser();
+  parser = parser || new CommaSeparatedListOutputParser();
 
   return chatPrompt.pipe(model).pipe(parser);
 }
@@ -154,6 +171,18 @@ class CommaSeparatedListOutputParser extends BaseOutputParser<string[]> {
 
   async parse(text: string): Promise<string[]> {
     return await text.split(',').map(function trimItem(item) {
+      return item.trim();
+    });
+  }
+}
+
+class DashSeparatedListOutputParser extends BaseOutputParser<string[]> {
+  getFormatInstructions(): string {
+    throw new Error('Method not implemented.');
+  }
+
+  async parse(text: string): Promise<string[]> {
+    return await text.split(' --- ').map(function trimItem(item) {
       return item.trim();
     });
   }
