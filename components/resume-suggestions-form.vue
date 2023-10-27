@@ -27,15 +27,24 @@
   } from '~/types/ISuggestedSkill';
   import { useResumePreviewStore } from '~/store/resumePreviewStore';
   import { IResumeSuggestionsBody } from 'types/IResumeSuggestionsBody';
+  import { ISuggestedAccomplishment } from 'types/ISuggestedAccomplishment';
 
-  const emit = defineEmits(['recommendedSkillsLoaded']);
+  const emit = defineEmits<{
+    suggestionsLoaded: [
+      suggestions: {
+        suggestedSkills: ISuggestedSkill[];
+        suggestedAccomplishments: ISuggestedAccomplishment[];
+      },
+    ];
+  }>();
 
   const message = useMessage();
   const { resumePreview } = useResumePreviewStore();
 
   const jobDescription = ref('');
   const isLoadingSuggestions = ref(false);
-  const recommendedSkills = ref<ISuggestedSkill[]>([]);
+  const suggestedSkills = ref<ISuggestedSkill[]>([]);
+  const suggestedAccomplishments = ref<ISuggestedAccomplishment[]>([]);
 
   const skills = computed(function computedSkills() {
     return (
@@ -57,29 +66,60 @@
       return;
     }
 
-    recommendedSkills.value =
-      data.value?.suggestedSkillsToEnable.map(
-        function getRecommendedSkills(skill) {
+    updateSuggestedAccomplishments(data.value?.suggestedAccomplishments);
+    updatedSuggestedSkills(
+      data.value?.suggestedSkillsToEnable,
+      data.value?.additionalRecommendations,
+    );
+
+    emit('suggestionsLoaded', {
+      suggestedSkills: suggestedSkills.value,
+      suggestedAccomplishments: suggestedAccomplishments.value,
+    });
+  }
+
+  function updateSuggestedAccomplishments(
+    suggestedAccomplishmentsFromAPI: string[][] | undefined,
+  ) {
+    if (!suggestedAccomplishmentsFromAPI) {
+      return;
+    }
+
+    const allAccomplishments = suggestedAccomplishmentsFromAPI.flat();
+
+    suggestedAccomplishments.value =
+      allAccomplishments.map(
+        function getSuggestedAccomplishments(accomplishment) {
           return {
-            skill,
+            accomplishment,
             action: ENABLE_ACTION,
           };
         },
       ) ?? [];
+  }
 
-    const additionalSkills: ISuggestedSkill[] =
-      data.value?.additionalRecommendations.map(
-        function getAdditionalSkills(skill) {
+  function updatedSuggestedSkills(
+    suggestedSkillsToEnable: string[] | undefined,
+    additionalRecommendations: string[] | undefined,
+  ) {
+    if (suggestedSkillsToEnable && additionalRecommendations) {
+      suggestedSkills.value =
+        suggestedSkillsToEnable.map(function getRecommendedSkills(skill) {
+          return {
+            skill,
+            action: ENABLE_ACTION,
+          };
+        }) ?? [];
+
+      const additionalSkills: ISuggestedSkill[] =
+        additionalRecommendations.map(function getAdditionalSkills(skill) {
           return {
             skill,
             action: IGNORE_ACTION,
           };
-        },
-      ) ?? [];
-
-    recommendedSkills.value = [...recommendedSkills.value, ...additionalSkills];
-
-    emit('recommendedSkillsLoaded', recommendedSkills.value);
+        }) ?? [];
+      suggestedSkills.value = [...suggestedSkills.value, ...additionalSkills];
+    }
   }
 
   const allAccomplishments = computed(function getAllAccomplishments() {

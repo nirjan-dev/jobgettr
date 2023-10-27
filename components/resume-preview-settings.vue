@@ -5,7 +5,7 @@
     <div class="mb-4">
       <div class="my-2">
         <resume-suggestions-form
-          @recommended-skills-loaded="handleRecommendedSkillsLoaded"
+          @suggestions-loaded="handleSuggestionsLoaded"
         />
       </div>
 
@@ -16,23 +16,31 @@
 
     <resume-suggestions-modal
       :open-model="showSuggestionsModel"
-      :recommended-skills="recommendedSkills"
+      :suggested-skills="suggestedSkills"
+      :suggested-accomplishments="suggestedAccomplishments"
       @close="closeSuggestionModal"
     />
   </div>
 </template>
 
 <script setup lang="ts">
+  import { ISuggestedAccomplishment } from 'types/ISuggestedAccomplishment';
   import { ISuggestedSkill } from '~/types/ISuggestedSkill';
 
   const showSuggestionsModel = ref(false);
 
-  const recommendedSkills = ref<ISuggestedSkill[]>([]);
+  const suggestedSkills = ref<ISuggestedSkill[]>([]);
+  const suggestedAccomplishments = ref<ISuggestedAccomplishment[]>([]);
 
-  function handleRecommendedSkillsLoaded(
-    loadingRecommendedSkills: ISuggestedSkill[],
-  ) {
-    recommendedSkills.value = loadingRecommendedSkills;
+  function handleSuggestionsLoaded({
+    suggestedSkills: suggestedSkillsFromAPI,
+    suggestedAccomplishments: suggestedAccomplishmentsFromAPI,
+  }: {
+    suggestedSkills: ISuggestedSkill[];
+    suggestedAccomplishments: ISuggestedAccomplishment[];
+  }) {
+    suggestedSkills.value = suggestedSkillsFromAPI;
+    suggestedAccomplishments.value = suggestedAccomplishmentsFromAPI;
     openSuggestionModal();
   }
 

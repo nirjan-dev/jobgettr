@@ -8,20 +8,42 @@
       aria-modal="true"
       class="max-w-5xl"
     >
-      <h3>Recommended skills for the job</h3>
-      <ul>
-        <li
-          v-for="skill in props.recommendedSkills"
-          :key="skill.skill"
-          class="mb-2 grid grid-cols-5 gap-2"
-        >
-          <div class="w-64">{{ skill.skill }}</div>
-          <n-select
-            v-model:value="skill.action"
-            :options="suggestedSkillActions"
-          />
-        </li>
-      </ul>
+      <div class="grid grid-cols-12 gap-4">
+        <div class="col-span-4">
+          <h3>Recommended skills for the job</h3>
+          <ul>
+            <li
+              v-for="skill in props.suggestedSkills"
+              :key="skill.skill"
+              class="mb-4 grid grid-cols-6 gap-1"
+            >
+              <div class="col-span-6">{{ skill.skill }}</div>
+              <n-select
+                v-model:value="skill.action"
+                class="col-span-6"
+                :options="suggestedSkillActions"
+              />
+            </li>
+          </ul>
+        </div>
+        <div class="col-span-8">
+          <h3>Recommended accomplishments for the job</h3>
+          <ul>
+            <li
+              v-for="accomplishment in props.suggestedAccomplishments"
+              :key="accomplishment.accomplishment"
+              class="mb-2 grid grid-cols-6 gap-2"
+            >
+              <div class="col-span-4">{{ accomplishment.accomplishment }}</div>
+              <n-select
+                v-model:value="accomplishment.action"
+                class="col-span-2"
+                :options="suggestedAccomplishmentActions"
+              />
+            </li>
+          </ul>
+        </div>
+      </div>
 
       <NButton
         type="success"
@@ -50,6 +72,7 @@
     LEARNING_LIST_ACTION,
   } from '~/types/ISuggestedSkill';
   import { useResumeStore } from '~/store/resumeStore';
+  import { ISuggestedAccomplishment } from 'types/ISuggestedAccomplishment';
 
   const message = useMessage();
   const { addMultipleItemsToLearningList } = useLearningListStore();
@@ -57,7 +80,8 @@
   const { addSkillsToResume } = useResumeStore();
 
   const props = defineProps<{
-    recommendedSkills: ISuggestedSkill[];
+    suggestedSkills: ISuggestedSkill[];
+    suggestedAccomplishments: ISuggestedAccomplishment[];
     openModel: boolean;
   }>();
 
@@ -94,6 +118,20 @@
     },
   ];
 
+  const suggestedAccomplishmentActions: {
+    label: ISuggestedAccomplishment['action'];
+    value: ISuggestedAccomplishment['action'];
+  }[] = [
+    {
+      label: ENABLE_ACTION,
+      value: ENABLE_ACTION,
+    },
+    {
+      label: IGNORE_ACTION,
+      value: IGNORE_ACTION,
+    },
+  ];
+
   const emit = defineEmits(['close']);
 
   function onCloseModel() {
@@ -101,7 +139,7 @@
   }
 
   function applySuggestions() {
-    const skillsToEnable = props.recommendedSkills
+    const skillsToEnable = props.suggestedSkills
       .filter(function filterEnabledSkills(skill) {
         return skill.action === ENABLE_ACTION;
       })
@@ -109,7 +147,7 @@
         return skill.skill;
       });
 
-    const skillsToAddToLearningList = props.recommendedSkills
+    const skillsToAddToLearningList = props.suggestedSkills
       .filter(function getLearningListSkills(skill) {
         return skill.action === LEARNING_LIST_ACTION;
       })
@@ -117,7 +155,7 @@
         return { skill: skill.skill };
       });
 
-    const skillsToAddToResume = props.recommendedSkills
+    const skillsToAddToResume = props.suggestedSkills
       .filter(function getResumeSkills(skill) {
         return skill.action === ADD_TO_RESUME;
       })
@@ -139,6 +177,27 @@
     addSkillsToResume(skillsToAddToResume);
 
     addMultipleItemsToLearningList(skillsToAddToLearningList);
+
+    const accomplishmentsToEnable = props.suggestedAccomplishments
+      .filter(function filterEnabledAccomplishments(accomplishment) {
+        return accomplishment.action === ENABLE_ACTION;
+      })
+      .map(function getAccomplishment(accomplishment) {
+        return accomplishment.accomplishment;
+      });
+
+    resumePreview.jobs.forEach(function updatePreviewJobs(job) {
+      job.accomplishments = job.accomplishments.map(
+        function updatePreviewAccomplishments(accomplishment) {
+          if (accomplishmentsToEnable.includes(accomplishment.title)) {
+            accomplishment.enabled = true;
+          } else {
+            accomplishment.enabled = false;
+          }
+          return accomplishment;
+        },
+      );
+    });
 
     message.success('Changes Applied');
 
