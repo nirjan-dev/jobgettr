@@ -8,6 +8,7 @@ export default defineEventHandler(
     const body = await readBody(event);
     const jobDescription = body.jobDescription;
     const skills = body.skills;
+    const accomplishments = body.accomplishments;
 
     const requiredSkills = await getRequiredSkillsFromJD(jobDescription);
 
@@ -28,6 +29,11 @@ export default defineEventHandler(
       })
       .slice(0, 5);
 
+    const suggestedAccomplishments = await getAccomplishmentSuggestionsFromJD(
+      accomplishments,
+      jobDescription,
+    );
+
     // enable this for testing
     // const { suggestedSkillsToEnable, additionalRecommendations } =
     //   getMockValues(skills);
@@ -37,6 +43,7 @@ export default defineEventHandler(
       additionalRecommendations,
       url,
       jobDescription,
+      suggestedAccomplishments,
     };
   },
 );
@@ -75,29 +82,28 @@ export default defineEventHandler(
 //   };
 // }
 
+async function getAccomplishmentSuggestionsFromJD(
+  description: string,
+  accomplishments: string[],
+) {
+  const template = `You are a tech recruiter helping people improve their resumes. You will be given a list of job accomplishments to include in a resume and the job description for a role. Only include the accomplishments that are relevant to the role. Return a comma separated list of the most relevant accomplishments. ONLY return a comma separated list, and nothing more. Only return a maximum of 12 accomplishments. Never return an accomplishment that is not in the list of accomplishments.`;
+
+  const humanTemplate = '{accomplishments} {description}';
+
+  const chain = createLangChain(template, humanTemplate);
+
+  return await chain.invoke({
+    accomplishments: accomplishments.join(','),
+    description,
+  });
+}
+
 async function getRequiredSkillsFromJD(description: string) {
   const template = `You are a recruiter helping developers find jobs. A user will pass in a description, and you should extract the most relevant required technical skills from the description in a comma separated list. ONLY return a comma separated list, and nothing more. Only extract a maximum of 15 skills.`;
 
   const humanTemplate = '{description}';
 
-  /**
-   * Chat prompt for generating comma-separated lists. It combines the system
-   * template and the human template.
-   */
-  const chatPrompt = ChatPromptTemplate.fromMessages([
-    ['system', template],
-    ['human', humanTemplate],
-  ]);
-
-  const model = new ChatOpenAI({
-    maxTokens: 1000,
-    temperature: 0,
-    modelName: 'gpt-3.5-turbo',
-    verbose: true,
-  });
-  const parser = new CommaSeparatedListOutputParser();
-
-  const chain = chatPrompt.pipe(model).pipe(parser);
+  const chain = createLangChain(template, humanTemplate);
 
   return await chain.invoke({
     description,
@@ -112,12 +118,21 @@ async function getSkillsSuggestions(
 
   const humanTemplate = '{currentSkills} {requiredSkills}';
 
+  const chain = createLangChain(template, humanTemplate);
+
+  return await chain.invoke({
+    currentSkills: currentSkills.join(','),
+    requiredSkills: requiredSkills.join(','),
+  });
+}
+
+function createLangChain(systemTemplate: string, humanTemplate: string) {
   /**
    * Chat prompt for generating comma-separated lists. It combines the system
    * template and the human template.
    */
   const chatPrompt = ChatPromptTemplate.fromMessages([
-    ['system', template],
+    ['system', systemTemplate],
     ['human', humanTemplate],
   ]);
 
@@ -129,12 +144,7 @@ async function getSkillsSuggestions(
   });
   const parser = new CommaSeparatedListOutputParser();
 
-  const chain = chatPrompt.pipe(model).pipe(parser);
-
-  return await chain.invoke({
-    currentSkills: currentSkills.join(','),
-    requiredSkills: requiredSkills.join(','),
-  });
+  return chatPrompt.pipe(model).pipe(parser);
 }
 
 class CommaSeparatedListOutputParser extends BaseOutputParser<string[]> {
