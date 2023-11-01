@@ -4,10 +4,10 @@
     path="jobs"
   >
     <n-dynamic-input
-      :value="formValue.jobs"
+      :value="jobs"
       :on-create="onCreateJob"
       #="{ index: jobIndex, value: job }"
-      @update-value="$emit('update:formValue', $event)"
+      @update-value="$emit('update:jobs', $event)"
     >
       <div class="w-full">
         <n-form-item
@@ -135,6 +135,11 @@
       </NCard>
     </NModal>
   </n-form-item>
+  <NButton
+    class="my-2 mb-8"
+    @click="$emit('update:jobs', [...jobs, onCreateJob()])"
+    >Add another Job</NButton
+  >
 </template>
 
 <script setup lang="ts">
@@ -149,13 +154,14 @@
   } from 'naive-ui';
   import { IResume } from 'types/IResume';
 
+  type Job = IResume['jobs'][0];
   defineProps<{
-    formValue: IResume;
+    jobs: Job[];
   }>();
-  defineEmits(['update:formValue']);
+  defineEmits(['update:jobs']);
   const showModal = ref(false);
   const accomplishmentsText = ref('');
-  const jobToUpdate = ref<IResume['jobs'][0] | null>(null);
+  const jobToUpdate = ref<Job | null>(null);
 
   function onCreateJob() {
     return {
@@ -187,7 +193,6 @@
     });
 
     accomplishmentsText.value = '';
-
     showModal.value = false;
 
     if (!jobToUpdate.value) {
@@ -195,7 +200,6 @@
     }
 
     const currentAccomplishments = jobToUpdate.value.accomplishments;
-
     currentAccomplishments.push(...accomplishments);
 
     jobToUpdate.value = null;

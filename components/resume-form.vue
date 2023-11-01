@@ -85,7 +85,7 @@
         <n-dynamic-tags v-model:value="formValue.skills"></n-dynamic-tags>
       </n-form-item>
 
-      <resume-job-field v-model:form-value="formValue" />
+      <resume-job-field v-model:jobs="formValue.jobs" />
 
       <n-form-item
         label="Projects"
