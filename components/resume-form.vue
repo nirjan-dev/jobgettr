@@ -85,84 +85,7 @@
         <n-dynamic-tags v-model:value="formValue.skills"></n-dynamic-tags>
       </n-form-item>
 
-      <n-form-item
-        label="Jobs"
-        path="jobs"
-      >
-        <n-dynamic-input
-          v-model:value="formValue.jobs"
-          :on-create="onCreateJob"
-          #="{ index: jobIndex, value }"
-        >
-          <div class="w-full">
-            <n-form-item
-              label="Company Name"
-              :path="`jobs.${jobIndex}.companyName`"
-            >
-              <n-input v-model:value="value.companyName"></n-input>
-            </n-form-item>
-            <n-form-item
-              label="Use Main Role Instead?"
-              :path="`jobs.${jobIndex}.useMainRole`"
-            >
-              <n-switch v-model:value="value.useMainRole"></n-switch>
-            </n-form-item>
-            <n-form-item
-              v-if="!value.useMainRole"
-              label="Role"
-              :path="`jobs.${jobIndex}.role`"
-            >
-              <n-input v-model:value="value.role"></n-input>
-            </n-form-item>
-            <n-form-item
-              label="Start Date"
-              :path="`jobs.${jobIndex}.startDate`"
-            >
-              <n-input v-model:value="value.startDate"></n-input>
-            </n-form-item>
-            <n-form-item
-              label="End Date"
-              :path="`jobs.${jobIndex}.endDate`"
-            >
-              <n-input v-model:value="value.endDate"></n-input>
-            </n-form-item>
-
-            <div class="my-2 w-full">
-              <n-form-item
-                label="Accomplishments"
-                :path="`jobs.${jobIndex}.accomplishments`"
-              >
-                <n-dynamic-input
-                  v-model:value="value.accomplishments"
-                  :on-create="onCreateAccomplishments"
-                  #="{ index: accomplishmentIndex, value }"
-                >
-                  <div class="w-full">
-                    <n-form-item
-                      :rule="{
-                        required: true,
-                        validator: (rule, value) => {
-                          return value.length <= 100;
-                        },
-                        message:
-                          'Accomplishment cannot exceed 100 characters. Keep your accomplishments concise for a better resume.',
-                        trigger: ['input', 'blur'],
-                      }"
-                      :path="`jobs[${jobIndex}].accomplishments[${accomplishmentIndex}].title`"
-                    >
-                      <span class="mr-2"> {{ accomplishmentIndex + 1 }} </span>
-                      <n-input
-                        v-model:value="value.title"
-                        type="textarea"
-                      ></n-input>
-                    </n-form-item>
-                  </div>
-                </n-dynamic-input>
-              </n-form-item>
-            </div>
-          </div>
-        </n-dynamic-input>
-      </n-form-item>
+      <resume-job-field v-model:form-value="formValue" />
 
       <n-form-item
         label="Projects"
@@ -220,7 +143,6 @@
     NFormItem,
     NInput,
     NDynamicTags,
-    NSwitch,
     NDynamicInput,
     NButton,
     useMessage,
@@ -251,32 +173,11 @@
 
   const message = useMessage();
 
-  function onCreateJob() {
-    return {
-      companyName: '',
-      role: '',
-      startDate: '',
-      endDate: '',
-      useMainRole: false,
-      accomplishments: [
-        {
-          title: '',
-        },
-      ],
-    };
-  }
-
   function onCreateProject() {
     return {
       title: '',
       description: '',
       link: '',
-    };
-  }
-
-  function onCreateAccomplishments() {
-    return {
-      title: '',
     };
   }
 
