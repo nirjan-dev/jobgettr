@@ -6,25 +6,27 @@ const prefix: storePrefix = 'NK13_JOB_SEARCH_HELPER';
 
 export const useResumeStore = defineStore('resume', function getResumeStore() {
   const resume: Ref<IResume> = useLocalStorage(`${prefix}_resume`, {
+    name: '',
+    email: '',
+    phoneNumber: '',
     skills: [],
-    jobs: [
-      {
-        accomplishments: [
-          {
-            title: '',
-          },
-        ],
-      },
-    ],
+    jobs: [],
+    summary: '',
     role: '',
+    links: [],
+    location: '',
+    projects: [],
   });
 
   function setResume(updatedResume: IResume) {
+    console.log({ updatedResume });
     (resume.value as IResume) = updatedResume;
   }
 
   function addSkillsToResume(skills: string[]) {
-    resume.value.skills = [...resume.value.skills, ...skills];
+    if (resume.value) {
+      resume.value.skills = [...resume.value.skills, ...skills];
+    }
   }
 
   return {

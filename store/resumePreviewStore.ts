@@ -7,19 +7,21 @@ const prefix: storePrefix = 'NK13_JOB_SEARCH_HELPER';
 
 export const useResumePreviewStore = defineStore(
   `${prefix}_resumePreview`,
+  // eslint-disable-next-line max-lines-per-function
   function getResumePreviewStore() {
     const { resume } = useResumeStore();
 
     const resumePreview: Ref<IResumePreview> = ref({
-      role: resume.role,
+      ...resume,
       skills: resume.skills.map(function getSkills(skill) {
         return {
           title: skill,
           enabled: true,
         };
       }),
-      jobs: resume.jobs.map(function getJObs(job) {
+      jobs: resume.jobs.map(function getJobs(job) {
         return {
+          ...job,
           accomplishments: job.accomplishments.map(
             function getAccomplishments(accomplishment) {
               return {
@@ -48,6 +50,14 @@ export const useResumePreviewStore = defineStore(
       },
     );
 
+    function getEnabledAccomplishmentsFromJob(job: {
+      accomplishments: { enabled: boolean; title: string }[];
+    }) {
+      return job.accomplishments.filter(function getEnabled(accomplishment) {
+        return accomplishment.enabled;
+      });
+    }
+
     const enabledSkills = computed(function computedEnabledSKills() {
       return resumePreview.value.skills
         ?.filter(function getEnabled(s) {
@@ -68,6 +78,7 @@ export const useResumePreviewStore = defineStore(
       enabledFirstJobAccomplishments,
       enabledSecondJobAccomplishments,
       enabledSkills,
+      getEnabledAccomplishmentsFromJob,
     };
   },
 );

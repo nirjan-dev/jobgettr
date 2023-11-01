@@ -35,9 +35,8 @@
     <n-form-item
       v-for="(job, index) in formValue.jobs"
       :key="index"
-      label="Jobs"
+      :label="`${job.companyName} achievements`"
       path="jobs"
-      :show-label="false"
     >
       <n-grid
         class="mb-2"

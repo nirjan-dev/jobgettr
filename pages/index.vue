@@ -5,4 +5,16 @@
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+  import { useResumeStore } from '~/store/resumeStore';
+
+  definePageMeta({
+    middleware: function homeRouteGuard() {
+      const { resume } = useResumeStore();
+
+      if (!resume) {
+        return navigateTo('/settings');
+      }
+    },
+  });
+</script>

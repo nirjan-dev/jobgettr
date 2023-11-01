@@ -1,33 +1,23 @@
 <template>
   <div class="mx-auto px-6 py-2">
     <div class="grid">
-      <h2 class="text-center text-4xl font-bold">Nirjan Khadka</h2>
+      <h2 class="text-center text-4xl font-bold">{{ resume.name }}</h2>
       <h3 class="text-center text-xl">{{ resume.role }}</h3>
       <ul class="flex flex-wrap justify-center gap-4">
         <li>
-          <a href="tel:+9779862437547">+977 9862437547</a>
+          <a :href="`tel:${resume.phoneNumber}`">{{ resume.phoneNumber }}</a>
         </li>
-        <li>Kathmandu, Nepal</li>
+        <li>{{ resume.location }}</li>
       </ul>
       <ul class="flex flex-wrap justify-center gap-4">
         <li>
-          <a href="mailto:webdev.nk@gmail.com"> webdev.nk@gmail.com</a>
+          <a :href="`mailto:${resume.email}`">{{ resume.email }}</a>
         </li>
-        <li><a href="https://nirjan.dev">nirjan.dev</a></li>
-        <li>
-          <a href="https://linkedin.com/in/nirjankhadka/"
-            >https://linkedin.com/in/nirjankhadka</a
-          >
-        </li>
-        <li>
-          <a href="https://twitter.com/nirjan_dev"
-            >https://twitter.com/nirjan_dev</a
-          >
-        </li>
-        <li>
-          <a href="https://gitbub.com/nirjan-dev/"
-            >https://gitbub.com/nirjan-dev/</a
-          >
+        <li
+          v-for="link in resume.links"
+          :key="link.link"
+        >
+          <a :href="link.link">{{ link.title }}</a>
         </li>
       </ul>
     </div>
@@ -36,11 +26,7 @@
       <section class="grid gap-1">
         <h3>Summary</h3>
         <p>
-          Self-taught developer with 5+ years of experience in building and
-          delivering high-quality web applications. Comfortable working in a
-          fast-paced remote team across multiple timezones. Lifelong learner and
-          passionate about using my tech skills to make a meaningful difference
-          to people's lives.
+          {{ resume.summary }}
         </p>
       </section>
       <section class="grid gap-1">
@@ -62,65 +48,42 @@
       <section class="grid gap-1">
         <h3>Work Experience</h3>
 
-        <article>
+        <article
+          v-for="job in resume.jobs"
+          :key="job.companyName"
+        >
           <h4 class="text-xl">
-            {{ resume.role }}
-            <span class="float-right text-base">Dec 2021 - Present</span>
-          </h4>
-          <h5 class="text-lg">Gfinity PLC</h5>
-
-          <ul v-if="enabledFirstJobAccomplishments?.length > 0">
-            <li
-              v-for="accomplishment in enabledFirstJobAccomplishments"
-              :key="accomplishment"
-            >
-              {{ accomplishment }}
-            </li>
-          </ul>
-        </article>
-
-        <article>
-          <h4 class="text-xl">
-            Frontend Developer
+            {{ job.useMainRole ? resume.role : job.role }}
             <span class="float-right text-base"
-              >Aug 2019 - Dec 2021, 2yrs 4mos</span
+              >{{ job.startDate }} - {{ job.endDate }}</span
             >
           </h4>
-          <h5 class="text-lg">Ensue LLC</h5>
-          <ul v-if="enabledSecondJobAccomplishments?.length > 0">
+          <h5 class="text-lg">{{ job.companyName }}</h5>
+
+          <ul v-if="job.accomplishments?.length > 0">
             <li
-              v-for="accomplishment in enabledSecondJobAccomplishments"
-              :key="accomplishment"
+              v-for="accomplishment in getEnabledAccomplishmentsFromJob(job)"
+              :key="accomplishment.title"
             >
-              {{ accomplishment }}
+              {{ accomplishment.title }}
             </li>
           </ul>
         </article>
       </section>
-      <section class="grid gap-1">
+      <section
+        v-if="resume.projects && resume.projects.length > 0"
+        class="grid gap-1"
+      >
         <h3>Projects</h3>
-        <article class="grid">
+        <article
+          v-for="project in resume.projects"
+          :key="project.link"
+          class="grid"
+        >
           <h4 class="text-xl">
-            <a href="https://remotedevjobs.net">remotedevjobs.net</a>
+            <a :href="project.link">{{ project.title }}</a>
           </h4>
-          <h5 class="font-normal">Job Board Site to find remote tech jobs</h5>
-        </article>
-
-        <article class="grid">
-          <h4 class="text-xl">
-            <a href="https://nirjan.dev">nirjan.dev</a>
-          </h4>
-          <h5 class="font-normal">Personal Site & Blog</h5>
-        </article>
-
-        <article class="grid">
-          <h4 class="text-xl">
-            <a
-              href="https://play.google.com/store/apps/details?id=com.nirjan.smartspend"
-              >SmartSpend</a
-            >
-          </h4>
-          <h5 class="font-normal">Android Purchase Planning App</h5>
+          <h5 class="font-normal">{{ project.description }}</h5>
         </article>
       </section>
     </div>
@@ -131,12 +94,11 @@
   import { storeToRefs } from 'pinia';
   import { useResumePreviewStore } from '~/store/resumePreviewStore';
 
-  const {
-    enabledFirstJobAccomplishments,
-    enabledSecondJobAccomplishments,
-    enabledSkills,
-    resumePreview: resume,
-  } = storeToRefs(useResumePreviewStore());
+  const { enabledSkills, resumePreview: resume } = storeToRefs(
+    useResumePreviewStore(),
+  );
+
+  const { getEnabledAccomplishmentsFromJob } = useResumePreviewStore();
 </script>
 
 <style scoped>
