@@ -71,6 +71,7 @@
             <n-form-item
               label="Link"
               :path="`links.${index}.link`"
+              :rule="getLinkValidationRule()"
             >
               <n-input v-model:value="value.link"></n-input>
             </n-form-item>
@@ -117,6 +118,7 @@
             <n-form-item
               label="Link"
               :path="`projects.${index}.link`"
+              :rule="getLinkValidationRule()"
             >
               <n-input v-model:value="value.link"></n-input>
             </n-form-item>
@@ -199,6 +201,8 @@
         setResume(formValue.value);
 
         message.success('Resume Saved');
+
+        navigateTo('/');
       } catch (error) {
         message.error('Something went wrong');
         throw createError('Failed to save resume settings');

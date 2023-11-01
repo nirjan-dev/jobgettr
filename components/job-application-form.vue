@@ -13,6 +13,7 @@
     <n-form-item
       label="link"
       path="applicationLink"
+      :rule="getLinkValidationRule()"
     >
       <n-input
         v-model:value="jobApplicationFormValue.applicationLink"
