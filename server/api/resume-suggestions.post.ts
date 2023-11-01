@@ -162,7 +162,7 @@ function createLangChain(
     maxTokens: 1000,
     temperature: 0,
     modelName: 'gpt-3.5-turbo',
-    verbose: true,
+    // verbose: true,
     openAIApiKey,
   });
   parser = parser || new CommaSeparatedListOutputParser();
