@@ -1,6 +1,6 @@
 <template>
   <div
-    class="sticky top-0 z-10 mb-12 flex items-center justify-center bg-white py-6 shadow-md"
+    class="sticky top-0 z-10 mb-12 flex items-center justify-center bg-white py-4 shadow-md print:hidden"
   >
     <n-menu
       :options="menuOptions"
@@ -21,10 +21,10 @@
           {
             to: '/',
           },
-          'Home',
+          'Apply to jobs',
         );
       },
-      key: 'home',
+      key: 'apply',
     },
 
     {
@@ -32,12 +32,12 @@
         return h(
           MyNuxtLink,
           {
-            to: '/settings',
+            to: '/edit',
           },
-          'Settings',
+          'Edit Resume',
         );
       },
-      key: 'settings',
+      key: 'edit',
     },
 
     {
@@ -47,7 +47,7 @@
           {
             to: '/applications',
           },
-          'Applications',
+          'My Applications',
         );
       },
       key: 'applications',

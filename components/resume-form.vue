@@ -1,7 +1,7 @@
 <template>
   <div class="mx-auto max-w-3xl p-3">
     <h2 class="mb-4 text-2xl font-bold">Resume Settings</h2>
-    <p>Required fields are marked with *</p>
+    <p>Required fields are marked with <span class="text-red-600">*</span></p>
     <n-form
       ref="formRef"
       :model="formValue"

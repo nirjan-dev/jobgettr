@@ -1,13 +1,14 @@
 <template>
-  <div class="mx-auto max-w-prose">
+  <div class="mx-auto max-w-3xl p-3">
+    <h1 class="mb-12">Skills to learn</h1>
     <ul v-if="sortedLearningList && sortedLearningList.length > 0">
       <li
         v-for="listItem in sortedLearningList"
         :key="listItem.skill"
       >
-        <NCard>
+        <NCard class="my-4">
           <div class="flex items-center justify-between">
-            <p>
+            <p class="text-lg">
               <span class="font-bold">{{ listItem.skill }}</span> mentioned in
               <span class="font-bold">{{ listItem.jobs }}</span> jobs
             </p>
@@ -36,6 +37,12 @@
         </NCard>
       </li>
     </ul>
+    <p
+      v-else
+      class="py-4 text-lg"
+    >
+      No Skills added to the learning list yet
+    </p>
   </div>
 </template>
 

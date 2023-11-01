@@ -6,6 +6,7 @@
     <n-form-item
       label="Company"
       path="company"
+      :rule="{ required: true }"
     >
       <n-input v-model:value="jobApplicationFormValue.company"></n-input>
     </n-form-item>
@@ -51,14 +52,15 @@
   const { resumePreview } = useResumePreviewStore();
 
   const jobApplicationFormRef = ref<FormInst | null>(null);
-  const jobApplicationFormValue = ref({
+  const initialState = {
     company: '',
     resumeDetails: '',
     applicationLink: '',
     stage: 'applied',
     notes: '',
     dateApplied: '',
-  });
+  };
+  const jobApplicationFormValue = ref(initialState);
 
   function applyForJob() {
     if (window) {
@@ -72,6 +74,8 @@
       addApplication(jobApplicationFormValue.value);
 
       message.success('Job Application Saved');
+
+      jobApplicationFormValue.value = initialState;
     }
   }
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <div class="mx-auto max-w-3xl p-3 print:hidden">
+  <div class="mx-auto max-w-3xl rounded-md bg-white p-8 shadow-sm print:hidden">
     <h2 class="mb-4 text-2xl font-bold">Resume Preview Settings</h2>
 
     <div class="mb-4">
@@ -20,6 +20,16 @@
       :suggested-accomplishments="suggestedAccomplishments"
       @close="closeSuggestionModal"
     />
+
+    <footer>
+      Made with 💜 by
+      <a
+        href="https://nirjan.dev"
+        target="_blank"
+        rel="noopener"
+        >Nirjan Khadka</a
+      >
+    </footer>
   </div>
 </template>
 
