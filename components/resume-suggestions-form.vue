@@ -7,19 +7,71 @@
       ></n-input>
     </n-form-item>
     <n-button
-      class="mb-3"
+      class="mb-3 mr-3"
       role="button"
       type="info"
       :loading="isLoadingSuggestions"
+      :disabled="!APIKeyStore.hasKeyBeenSet"
       @click="getResumeSuggestions"
     >
       Get Resume Suggestions</n-button
     >
+    <n-button @click="showModal = true"
+      >{{ APIKeyStore.hasKeyBeenSet ? 'Update' : 'Add' }} OpenAI key</n-button
+    >
+
+    <n-modal :show="showModal">
+      <n-card
+        role="dialog"
+        aria-modal="true"
+        class="max-w-xl"
+        title="Edit your OpenAI key"
+      >
+        <p>
+          You can get an OPenAI key by signing up to OpenAI and going on
+          <a
+            target="_blank"
+            rel="noopener"
+            href="https://platform.openai.com/account/api-keys"
+            >this pag.</a
+          >
+        </p>
+        <p>
+          Your Key is never sent to us and we don't store it on our site. It is
+          only stored locally in your browser and tt is sent directly to OpenAI
+          when we make our API calls.
+        </p>
+        <n-form-item
+          label="OpenAI key"
+          :rule="{ required: true }"
+        >
+          <n-input v-model:value="openAIKeyInput"></n-input>
+        </n-form-item>
+        <n-button
+          type="success"
+          class="mr-2"
+          @click="saveOpenAIKey()"
+          >Save</n-button
+        >
+        <n-button
+          type="tertiary"
+          @click="showModal = false"
+          >Cancel</n-button
+        >
+      </n-card>
+    </n-modal>
   </div>
 </template>
 
 <script setup lang="ts">
-  import { NButton, useMessage, NFormItem, NInput } from 'naive-ui';
+  import {
+    NButton,
+    useMessage,
+    NFormItem,
+    NInput,
+    NModal,
+    NCard,
+  } from 'naive-ui';
   import {
     ENABLE_ACTION,
     IGNORE_ACTION,
@@ -28,6 +80,11 @@
   import { useResumePreviewStore } from '~/store/resumePreviewStore';
   import { IResumeSuggestionsBody } from 'types/IResumeSuggestionsBody';
   import { ISuggestedAccomplishment } from 'types/ISuggestedAccomplishment';
+  import { useAPIKeyStore } from '~/store/apiKeyStore';
+
+  const APIKeyStore = useAPIKeyStore();
+  const showModal = ref(false);
+  const openAIKeyInput = ref(APIKeyStore.getKey());
 
   const emit = defineEmits<{
     suggestionsLoaded: [
@@ -53,6 +110,19 @@
       }) ?? []
     );
   });
+
+  function saveOpenAIKey() {
+    if (!openAIKeyInput.value) {
+      message.error('Please enter a value for your OpenAI key');
+      return;
+    }
+
+    APIKeyStore.setKey(openAIKeyInput.value);
+
+    message.success('Successfully Saved OpenAI Key');
+
+    showModal.value = false;
+  }
 
   async function getResumeSuggestions() {
     if (!jobDescription.value) {
@@ -144,6 +214,7 @@
       jobDescription: jobDescription.value,
       skills: skills.value,
       accomplishments: allAccomplishments.value,
+      apiKey: APIKeyStore.getKey(),
     };
 
     const { data } = await useFetch('/api/resume-suggestions', {

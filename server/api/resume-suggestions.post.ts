@@ -3,12 +3,17 @@ import { ChatPromptTemplate } from 'langchain/prompts';
 import { BaseOutputParser } from 'langchain/schema/output_parser';
 import { IResumeSuggestionsBody } from '~/types/IResumeSuggestionsBody';
 
+let openAIApiKey: string;
+
 export default defineEventHandler(
   async function resumeSuggestionsEndpoint(event) {
     const body = await readBody<IResumeSuggestionsBody>(event);
     const jobDescription = body.jobDescription;
     const skills = body.skills;
     const accomplishments = body.accomplishments;
+    const apiKey = body.apiKey;
+
+    openAIApiKey = apiKey;
 
     const requiredSkills = await getRequiredSkillsFromJD(jobDescription);
 
@@ -158,6 +163,7 @@ function createLangChain(
     temperature: 0,
     modelName: 'gpt-3.5-turbo',
     verbose: true,
+    openAIApiKey,
   });
   parser = parser || new CommaSeparatedListOutputParser();
 
