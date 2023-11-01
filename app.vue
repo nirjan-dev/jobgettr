@@ -1,12 +1,7 @@
 <template>
-  <div>
+  <div class="bg-gray-100">
     <n-message-provider>
-      <nav class="flex items-center justify-center gap-4 py-4 print:hidden">
-        <NuxtLink to="/">Home</NuxtLink>
-        <NuxtLink to="/settings">Settings</NuxtLink>
-        <NuxtLink to="/applications">Applications</NuxtLink>
-        <NuxtLink to="/learning-list">Learning List</NuxtLink>
-      </nav>
+      <main-nav />
       <NuxtPage />
     </n-message-provider>
   </div>
