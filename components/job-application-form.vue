@@ -60,22 +60,33 @@
     notes: '',
     dateApplied: '',
   };
-  const jobApplicationFormValue = ref(initialState);
+  const jobApplicationFormValue = ref({
+    ...initialState,
+  });
 
   function applyForJob() {
-    if (window) {
-      window.print();
+    jobApplicationFormRef.value?.validate(function handleValidation(errors) {
+      if (errors) {
+        message.error('Please fill in all required fields');
+        return;
+      }
 
-      jobApplicationFormValue.value.resumeDetails =
-        JSON.stringify(resumePreview);
+      saveJobApplication();
+      jobApplicationFormValue.value = { ...initialState };
 
-      jobApplicationFormValue.value.dateApplied = new Date().toISOString();
+      if (window) {
+        window.print();
+      }
+    });
+  }
 
-      addApplication(jobApplicationFormValue.value);
+  function saveJobApplication() {
+    jobApplicationFormValue.value.resumeDetails = JSON.stringify(resumePreview);
 
-      message.success('Job Application Saved');
+    jobApplicationFormValue.value.dateApplied = new Date().toISOString();
 
-      jobApplicationFormValue.value = initialState;
-    }
+    addApplication(jobApplicationFormValue.value);
+
+    message.success('Job Application Saved');
   }
 </script>
