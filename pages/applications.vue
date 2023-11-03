@@ -8,7 +8,7 @@
     >
       <div
         v-for="application in applications"
-        :key="application.applicationLink"
+        :key="application.id"
         class="my-6 rounded-lg bg-white px-6 py-8 shadow-sm"
       >
         <h2 class="mb-2">{{ application.company }}</h2>
@@ -26,12 +26,25 @@
           }}</a>
         </p>
 
-        <p v-if="application.notes">{{ application.notes }}</p>
+        <div v-if="application.notes">
+          <notes-toggle :notes="application.notes" />
+        </div>
 
         <div class="my-3">
           <n-button
+            type="info"
+            class="mr-2"
+            >Update status</n-button
+          >
+          <n-button
             type="error"
-            @click="() => deleteApplication(application.applicationLink)"
+            :ghost="true"
+            @click="
+              () => {
+                deleteApplication(application.id);
+                message.success('Application deleted');
+              }
+            "
             >Delete</n-button
           >
         </div>
@@ -48,8 +61,11 @@
 </template>
 
 <script setup lang="ts">
-  import { NButton } from 'naive-ui';
+  import { NButton, useMessage } from 'naive-ui';
+  import { storeToRefs } from 'pinia';
   import { useApplicationsStore } from '~/store/applicationStore';
+  const message = useMessage();
 
-  const { applications, deleteApplication } = useApplicationsStore();
+  const { applications } = storeToRefs(useApplicationsStore());
+  const { deleteApplication } = useApplicationsStore();
 </script>

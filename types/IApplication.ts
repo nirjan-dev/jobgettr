@@ -1,4 +1,5 @@
 export interface IApplication {
+  id: string;
   resumeDetails: string;
   company: string;
   applicationLink: string;
@@ -6,3 +7,5 @@ export interface IApplication {
   notes: string;
   dateApplied: string;
 }
+
+export interface IApplicationWithoutID extends Omit<IApplication, 'id'> {}

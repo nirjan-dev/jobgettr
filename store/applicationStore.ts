@@ -1,6 +1,6 @@
 import { defineStore, skipHydrate } from 'pinia';
 import { useLocalStorage } from '@vueuse/core';
-import { IApplication } from 'types/IApplication';
+import { IApplication, IApplicationWithoutID } from 'types/IApplication';
 import { storePrefix } from 'types/storePrefix';
 
 const prefix: storePrefix = 'NK13_JOB_SEARCH_HELPER';
@@ -13,14 +13,17 @@ export const useApplicationsStore = defineStore(
       [],
     );
 
-    function addApplication(newApplication: IApplication) {
-      applications.value.push(newApplication);
+    function addApplication(newApplication: IApplicationWithoutID) {
+      applications.value.push({
+        ...newApplication,
+        id: crypto.randomUUID(),
+      });
     }
 
-    function deleteApplication(applicationLink: string) {
+    function deleteApplication(id: string) {
       const index = applications.value.findIndex(
         function getMatchByLink(application) {
-          return application.applicationLink === applicationLink;
+          return application.id === id;
         },
       );
       applications.value.splice(index, 1);
