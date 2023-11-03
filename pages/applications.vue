@@ -1,53 +1,29 @@
 <template>
   <div class="mx-auto max-w-3xl p-3 px-4">
-    <h1>Job Application History</h1>
+    <h1 class="mb-8">Job Application History</h1>
 
     <div
       v-if="applications && applications.length > 0"
       class="py-6"
     >
-      <div
-        v-for="application in applications"
-        :key="application.id"
-        class="my-6 rounded-lg bg-white px-6 py-8 shadow-sm"
-      >
-        <h2 class="mb-2">{{ application.company }}</h2>
+      <div v-if="appliedApplications.length > 0">
+        <h2 class="text-2xl opacity-75">Applied</h2>
+        <show-application :applications="appliedApplications" />
+      </div>
 
-        <p>
-          Applied on
-          <span class="mr-2">{{
-            new Date(application.dateApplied).toLocaleDateString()
-          }}</span>
-        </p>
+      <div v-if="interviewingApplications.length > 0">
+        <h2 class="text-2xl opacity-75">Interviewing</h2>
+        <show-application :applications="interviewingApplications" />
+      </div>
 
-        <p>
-          <a :href="application.applicationLink">{{
-            application.applicationLink
-          }}</a>
-        </p>
+      <div v-if="offerApplications.length > 0">
+        <h2 class="text-2xl opacity-75">Offers</h2>
+        <show-application :applications="offerApplications" />
+      </div>
 
-        <div v-if="application.notes">
-          <notes-toggle :notes="application.notes" />
-        </div>
-
-        <div class="my-3">
-          <n-button
-            type="info"
-            class="mr-2"
-            >Update status</n-button
-          >
-          <n-button
-            type="error"
-            :ghost="true"
-            @click="
-              () => {
-                deleteApplication(application.id);
-                message.success('Application deleted');
-              }
-            "
-            >Delete</n-button
-          >
-        </div>
+      <div v-if="rejectedApplications.length > 0">
+        <h2 class="text-2xl opacity-75">Rejected</h2>
+        <show-application :applications="rejectedApplications" />
       </div>
     </div>
 
@@ -61,11 +37,36 @@
 </template>
 
 <script setup lang="ts">
-  import { NButton, useMessage } from 'naive-ui';
   import { storeToRefs } from 'pinia';
   import { useApplicationsStore } from '~/store/applicationStore';
-  const message = useMessage();
 
   const { applications } = storeToRefs(useApplicationsStore());
-  const { deleteApplication } = useApplicationsStore();
+
+  const appliedApplications = computed(function getAppliedApplications() {
+    return applications.value.filter(function checkIfApplied(application) {
+      return application.stage === 'applied';
+    });
+  });
+
+  const interviewingApplications = computed(
+    function getInterviewingApplications() {
+      return applications.value.filter(
+        function checkIfInterviewing(application) {
+          return application.stage === 'interviewing';
+        },
+      );
+    },
+  );
+
+  const offerApplications = computed(function getOfferApplications() {
+    return applications.value.filter(function checkIfOffer(application) {
+      return application.stage === 'offer';
+    });
+  });
+
+  const rejectedApplications = computed(function getRejectedApplications() {
+    return applications.value.filter(function checkIfRejected(application) {
+      return application.stage === 'rejected';
+    });
+  });
 </script>

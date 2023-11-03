@@ -3,7 +3,7 @@ export interface IApplication {
   resumeDetails: string;
   company: string;
   applicationLink: string;
-  stage: string;
+  stage: 'applied' | 'interviewing' | 'offer' | 'rejected';
   notes: string;
   dateApplied: string;
 }
