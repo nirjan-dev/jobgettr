@@ -2,21 +2,14 @@ import { defineStore, skipHydrate } from 'pinia';
 import { useLocalStorage } from '@vueuse/core';
 import { IResume } from 'types/IResume';
 import { storePrefix } from 'types/storePrefix';
+import { getDefaultResume } from '~/utils/getDefaultResume';
 const prefix: storePrefix = 'NK13_JOB_SEARCH_HELPER';
 
 export const useResumeStore = defineStore('resume', function getResumeStore() {
-  const resume: Ref<IResume> = useLocalStorage(`${prefix}_resume`, {
-    name: '',
-    email: '',
-    phoneNumber: '',
-    skills: [],
-    jobs: [],
-    summary: '',
-    role: '',
-    links: [],
-    location: '',
-    projects: [],
-  });
+  const resume: Ref<IResume> = useLocalStorage(
+    `${prefix}_resume`,
+    getDefaultResume(),
+  );
 
   function setResume(updatedResume: IResume) {
     (resume.value as IResume) = updatedResume;
