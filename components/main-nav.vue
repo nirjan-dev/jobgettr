@@ -2,68 +2,40 @@
   <div
     class="sticky top-0 z-10 mb-12 flex items-center justify-center bg-white py-4 shadow-md print:hidden"
   >
-    <n-menu
-      :options="menuOptions"
-      mode="horizontal"
-    />
+    <nav>
+      <ul class="flex flex-wrap gap-4 px-2 md:gap-8">
+        <li
+          v-for="option in menuOptions"
+          :key="option.path"
+        >
+          <nuxt-link
+            class="text-black hover:text-blue-500"
+            :to="option.path"
+            >{{ option.label }}</nuxt-link
+          >
+        </li>
+      </ul>
+    </nav>
   </div>
 </template>
 
 <script setup lang="ts">
-  import { MenuOption, NMenu } from 'naive-ui';
-  import MyNuxtLink from '~/components/MyNuxtLink';
-
-  const menuOptions: MenuOption[] = [
+  const menuOptions = [
     {
-      label: function getLink() {
-        return h(
-          MyNuxtLink,
-          {
-            to: '/',
-          },
-          'Apply to jobs',
-        );
-      },
-      key: 'apply',
+      label: 'Apply',
+      path: '/',
     },
-
     {
-      label: function getLink() {
-        return h(
-          MyNuxtLink,
-          {
-            to: '/edit',
-          },
-          'Edit Resume',
-        );
-      },
-      key: 'edit',
+      label: 'Edit',
+      path: '/edit',
     },
-
     {
-      label: function getLink() {
-        return h(
-          MyNuxtLink,
-          {
-            to: '/applications',
-          },
-          'My Applications',
-        );
-      },
-      key: 'applications',
+      label: 'Applications',
+      path: '/applications',
     },
-
     {
-      label: function getLink() {
-        return h(
-          MyNuxtLink,
-          {
-            to: '/learning-list',
-          },
-          'Learning List',
-        );
-      },
-      key: 'learning-list',
+      label: 'Learning list',
+      path: '/learning-list',
     },
   ];
 </script>

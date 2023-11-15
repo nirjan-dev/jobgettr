@@ -31,7 +31,17 @@
       ></n-input>
     </n-form-item>
 
-    <n-button @click="applyForJob">Apply for the Job</n-button>
+    <n-button
+      class="mr-2"
+      type="success"
+      @click="applyForJob"
+      >Apply for the Job</n-button
+    >
+    <n-button
+      type="tertiary"
+      @click="emit('onCancel')"
+      >Cancel</n-button
+    >
   </n-form>
 </template>
 
@@ -44,6 +54,7 @@
     useMessage,
     NButton,
   } from 'naive-ui';
+  import { IApplicationWithoutID } from 'types/IApplication';
   import { useApplicationsStore } from '~/store/applicationStore';
   import { useResumePreviewStore } from '~/store/resumePreviewStore';
 
@@ -51,8 +62,10 @@
   const message = useMessage();
   const { resumePreview } = useResumePreviewStore();
 
+  const emit = defineEmits(['onCancel', 'onSuccess']);
+
   const jobApplicationFormRef = ref<FormInst | null>(null);
-  const initialState = {
+  const initialState: IApplicationWithoutID = {
     company: '',
     resumeDetails: '',
     applicationLink: '',
@@ -73,10 +86,6 @@
 
       saveJobApplication();
       jobApplicationFormValue.value = { ...initialState };
-
-      if (window) {
-        window.print();
-      }
     });
   }
 
@@ -88,5 +97,7 @@
     addApplication(jobApplicationFormValue.value);
 
     message.success('Job Application Saved');
+
+    emit('onSuccess');
   }
 </script>

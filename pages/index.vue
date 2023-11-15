@@ -19,6 +19,20 @@
       if (!resume) {
         return navigateTo('edit');
       }
+
+      // check if it has the import URL param
+      const route = useRoute();
+
+      const importParam = route.query.import;
+      if (importParam) {
+        let decoded;
+        try {
+          decoded = JSON.parse(importParam as string);
+
+          const { setResume } = useResumeStore();
+          setResume(decoded);
+        } catch {}
+      }
     },
   });
 </script>

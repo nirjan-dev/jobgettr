@@ -7,17 +7,16 @@
         :key="listItem.skill"
       >
         <NCard class="my-4">
-          <div class="flex items-center justify-between">
+          <div class="flex flex-wrap items-center justify-between">
             <p class="text-lg">
               <span class="font-bold">{{ listItem.skill }}</span> mentioned in
               <span class="font-bold">{{ listItem.jobs }}</span> jobs
             </p>
 
-            <div>
+            <div class="flex flex-wrap gap-2">
               <NButton
                 size="small"
                 type="success"
-                class="mr-2"
                 @click="addListItemAsSkill(listItem)"
                 >Add to Resume</NButton
               >

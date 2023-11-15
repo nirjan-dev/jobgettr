@@ -1,15 +1,18 @@
 <template>
-  <div class="mx-auto px-6 py-2">
+  <div
+    id="resume-preview"
+    class="mx-auto px-6 py-2"
+  >
     <div class="grid">
       <h2 class="text-center text-4xl font-bold">{{ resume.name }}</h2>
       <h3 class="text-center text-xl">{{ resume.role }}</h3>
-      <ul class="flex flex-wrap justify-center gap-4">
+      <ul class="my-0 flex flex-wrap justify-center gap-4">
         <li>
           <a :href="`tel:${resume.phoneNumber}`">{{ resume.phoneNumber }}</a>
         </li>
         <li>{{ resume.location }}</li>
       </ul>
-      <ul class="flex flex-wrap justify-center gap-4">
+      <ul class="my-0 flex flex-wrap justify-center gap-4">
         <li>
           <a :href="`mailto:${resume.email}`">{{ resume.email }}</a>
         </li>
@@ -60,7 +63,10 @@
           </h4>
           <h5 class="text-lg">{{ job.companyName }}</h5>
 
-          <ul v-if="job.accomplishments?.length > 0">
+          <ul
+            v-if="job.accomplishments?.length > 0"
+            class="list-inside list-disc"
+          >
             <li
               v-for="accomplishment in getEnabledAccomplishmentsFromJob(job)"
               :key="accomplishment.title"
@@ -116,6 +122,6 @@
   }
 
   section li {
-    @apply mb-1 list-disc;
+    @apply mb-1;
   }
 </style>
