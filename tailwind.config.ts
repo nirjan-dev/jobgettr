@@ -7,8 +7,9 @@ export default <Partial<Config>>{
   },
   theme: {
     extend: {
-      colors: {
-        primary: defaultTheme.colors.green,
+      fontFamily: {
+        sans: ['"Open Sans"', ...defaultTheme.fontFamily.sans],
+        serif: ['"Open Sans"', ...defaultTheme.fontFamily.serif],
       },
     },
   },

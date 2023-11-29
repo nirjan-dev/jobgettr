@@ -1,9 +1,13 @@
-import puppeteer from 'puppeteer';
+import { launch } from 'puppeteer-core';
+import chromium from '@sparticuz/chromium';
 
 export default defineEventHandler(async function downloadResume(event) {
   const body = await readBody<{ resumeDetails: string }>(event);
-  const browser = await puppeteer.launch({
-    headless: 'new',
+
+  const browser = await launch({
+    args: chromium.args,
+    defaultViewport: chromium.defaultViewport,
+    executablePath: await chromium.executablePath(),
   });
   const page = await browser.newPage();
 

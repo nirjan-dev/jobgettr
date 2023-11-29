@@ -27,8 +27,15 @@ export default defineNuxtConfig({
     '@vueuse/nuxt',
     '@nuxtjs/eslint-module',
     '@nuxtjs/stylelint-module',
+    '@nuxtjs/google-fonts',
+    // '@nuxtjs/fontaine',
   ],
   typescript: {
     strict: true,
+  },
+  googleFonts: {
+    families: {
+      'Open Sans': [400, 700],
+    },
   },
 });

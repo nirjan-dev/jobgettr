@@ -4,7 +4,7 @@
       class="col-span-12 print:hidden md:col-span-4"
     ></resume-preview-settings>
     <resume-preview
-      class="col-span-12 print:col-span-12 md:col-span-8"
+      class="col-span-12 print:col-span-12 md:col-span-8 print:md:col-span-12"
     ></resume-preview>
   </div>
 </template>

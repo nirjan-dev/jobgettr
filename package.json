@@ -19,6 +19,7 @@
     "@nuxt/devtools": "latest",
     "@nuxtjs/eslint-config-typescript": "^12.1.0",
     "@nuxtjs/eslint-module": "^4.1.0",
+    "@nuxtjs/google-fonts": "^3.1.0",
     "@nuxtjs/stylelint-module": "^5.1.0",
     "@nuxtjs/tailwindcss": "^6.8.0",
     "@types/node": "^18.17.3",
@@ -50,11 +51,12 @@
   "dependencies": {
     "@css-render/vue3-ssr": "^0.15.12",
     "@pinia/nuxt": "^0.4.11",
+    "@sparticuz/chromium": "^119.0.0",
     "cheerio": "^1.0.0-rc.12",
     "langchain": "^0.0.154",
     "naive-ui": "^2.34.4",
     "pinia": "^2.1.6",
-    "puppeteer": "^19.11.1"
+    "puppeteer": "^21.5.2"
   },
   "overrides": {
     "vue": "latest"

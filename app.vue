@@ -23,7 +23,7 @@
   h4,
   h5,
   h6 {
-    @apply m-0 font-sans leading-4;
+    @apply m-0 font-serif leading-4;
   }
 
   ul {
