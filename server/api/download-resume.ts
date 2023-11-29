@@ -1,5 +1,6 @@
 import { launch } from 'puppeteer-core';
 import chromium from '@sparticuz/chromium';
+const runtimeConfig = useRuntimeConfig();
 
 export default defineEventHandler(async function downloadResume(event) {
   const body = await readBody<{ resumeDetails: string }>(event);
@@ -11,10 +12,10 @@ export default defineEventHandler(async function downloadResume(event) {
   });
   const page = await browser.newPage();
 
-  await page.goto(
-    `http://localhost:3000?import=${encodeURIComponent(body.resumeDetails)}`,
-    { waitUntil: 'networkidle0' },
-  );
+  const url = runtimeConfig.public.URL;
+  await page.goto(`${url}/?import=${encodeURIComponent(body.resumeDetails)}`, {
+    waitUntil: 'networkidle0',
+  });
 
   await page.setViewport({
     width: 1280,

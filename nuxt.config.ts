@@ -20,6 +20,11 @@ export default defineNuxtConfig({
           : [],
     },
   },
+  runtimeConfig: {
+    public: {
+      URL: '',
+    },
+  },
   devtools: { enabled: false },
   modules: [
     '@nuxtjs/tailwindcss',
