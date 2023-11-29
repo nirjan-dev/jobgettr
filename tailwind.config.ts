@@ -11,6 +11,9 @@ export default <Partial<Config>>{
         sans: ['"Open Sans"', ...defaultTheme.fontFamily.sans],
         serif: ['"Open Sans"', ...defaultTheme.fontFamily.serif],
       },
+      colors: {
+        primary: '#008080',
+      },
     },
   },
 };

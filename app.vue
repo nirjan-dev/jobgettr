@@ -2,7 +2,9 @@
   <div class="min-h-screen bg-gray-100">
     <n-message-provider>
       <main-nav />
-      <NuxtPage />
+      <div class="container mx-auto">
+        <NuxtPage />
+      </div>
     </n-message-provider>
   </div>
 </template>

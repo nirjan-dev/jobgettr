@@ -33,7 +33,6 @@ export default defineNuxtConfig({
     '@nuxtjs/eslint-module',
     '@nuxtjs/stylelint-module',
     '@nuxtjs/google-fonts',
-    // '@nuxtjs/fontaine',
   ],
   typescript: {
     strict: true,
