@@ -44,6 +44,14 @@
           <a href="/api/login/github">Continue with Github</a>
         </NButton>
 
+        <NButton
+          class="mt-4"
+          type="default"
+          :block="true"
+        >
+          <a href="/api/login/google">Continue with Google</a>
+        </NButton>
+
         <p class="my-8 text-base">
           Don't have an account?
           <nuxt-link

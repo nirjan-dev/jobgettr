@@ -2,10 +2,10 @@ import { H3Event } from 'h3';
 import { OAuthRequestError } from '@lucia-auth/oauth';
 
 // eslint-disable-next-line complexity
-export default defineEventHandler(async function githubCallbackHandler(
+export default defineEventHandler(async function googleCallbackHandler(
   event: H3Event,
 ) {
-  const storedState = getCookie(event, 'github_oauth_state');
+  const storedState = getCookie(event, 'google_oauth_state');
   const query = getQuery(event);
   const state = query.state?.toString();
   const code = query.code?.toString();
@@ -20,19 +20,18 @@ export default defineEventHandler(async function githubCallbackHandler(
   }
 
   try {
-    const { getExistingUser, githubUser, createUser } =
-      await githubAuth.validateCallback(code);
+    const { getExistingUser, googleUser, createUser } =
+      await googleAuth.validateCallback(code);
 
     const getUser = async function () {
       const existingUser = await getExistingUser();
       if (existingUser) {
         return existingUser;
       }
-
       return await createUser({
         attributes: {
-          username: githubUser.login,
-          email: githubUser.email ?? '',
+          username: googleUser.name.replace(' ', '_').toLowerCase(),
+          email: googleUser.email ?? '',
         },
       });
     };

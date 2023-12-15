@@ -26,6 +26,8 @@ export default defineNuxtConfig({
     },
     githubClientId: '',
     githubClientSecret: '',
+    googleClientId: '',
+    googleClientSecret: '',
   },
   devtools: { enabled: false },
   modules: [
