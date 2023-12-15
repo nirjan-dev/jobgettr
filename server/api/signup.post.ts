@@ -4,11 +4,11 @@ export default defineEventHandler(async function eventHandler(event: H3Event) {
   const body = await readBody(event);
 
   // validate the body
-  const { email, password, name } = body;
+  const { email, password, username } = body;
 
-  if (!email || !password || !name) {
+  if (!email || !password || !username) {
     throw createError({
-      message: 'email, password and name are required',
+      message: 'email, password and username are required',
       statusCode: 400,
     });
   }
@@ -23,7 +23,7 @@ export default defineEventHandler(async function eventHandler(event: H3Event) {
         password,
       },
       attributes: {
-        name,
+        username,
         email,
       },
     });

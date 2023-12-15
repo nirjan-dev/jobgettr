@@ -36,6 +36,14 @@
           >Login</NButton
         >
 
+        <NButton
+          class="mt-4"
+          type="default"
+          :block="true"
+        >
+          <a href="/api/login/github">Continue with Github</a>
+        </NButton>
+
         <p class="my-8 text-base">
           Don't have an account?
           <nuxt-link
@@ -59,6 +67,12 @@
     NInput,
     useMessage,
   } from 'naive-ui';
+
+  definePageMeta({
+    middleware: ['redirect-logged-in'],
+  });
+
+  const router = useRouter();
 
   const isSubmitting = ref(false);
   const formModel = ref({
@@ -101,6 +115,7 @@
       });
 
       message.success('Login successful');
+      router.push('/apply');
     } catch (error) {
       console.log({ error });
       message.error('Something went wrong, please try again');

@@ -40,6 +40,10 @@
   import { storeToRefs } from 'pinia';
   import { useApplicationsStore } from '~/store/applicationStore';
 
+  definePageMeta({
+    middleware: ['protected'],
+  });
+
   const { applications } = storeToRefs(useApplicationsStore());
 
   const appliedApplications = computed(function getAppliedApplications() {

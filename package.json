@@ -55,6 +55,7 @@
     "@css-render/vue3-ssr": "^0.15.12",
     "@libsql/client": "^0.3.0",
     "@lucia-auth/adapter-sqlite": "^2.0.1",
+    "@lucia-auth/oauth": "^3.5.0",
     "@pinia/nuxt": "^0.4.11",
     "@sparticuz/chromium": "^119.0.0",
     "drizzle-orm": "^0.29.1",

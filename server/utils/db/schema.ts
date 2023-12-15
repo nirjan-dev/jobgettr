@@ -3,8 +3,8 @@ import { sqliteTable, text, blob } from 'drizzle-orm/sqlite-core';
 export const user = sqliteTable('user', {
   id: text('id').primaryKey(),
   // other user attributes
-  first_name: text('name'),
   email: text('email').notNull(),
+  username: text('username').notNull(),
 });
 
 export const session = sqliteTable('user_session', {

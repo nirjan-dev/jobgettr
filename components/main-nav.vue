@@ -105,6 +105,7 @@
         method: 'POST',
       });
       message.success('Successfully logged out');
+      user.value = null;
     } catch (error) {
       message.error('Something went wrong, please try again!');
     }

@@ -50,6 +50,11 @@
   import { storeToRefs } from 'pinia';
   import { useResumeStore } from '~/store/resumeStore';
   import { useLearningListStore } from '~/store/learningListStore.ts';
+
+  definePageMeta({
+    middleware: ['protected'],
+  });
+
   const { addSkillsToResume } = useResumeStore();
   const { sortedLearningList } = storeToRefs(useLearningListStore());
   const { deleteItemFromLearningList } = useLearningListStore();

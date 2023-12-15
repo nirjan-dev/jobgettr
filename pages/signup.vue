@@ -16,15 +16,18 @@
           label="Email"
           path="email"
         >
-          <NInput v-model:value="formModel.email"></NInput>
+          <NInput
+            v-model:value="formModel.email"
+            :input-props="{ type: 'email' }"
+          ></NInput>
         </NFormItem>
 
         <NFormItem
-          label="Name"
-          path="name"
+          label="Username"
+          path="username"
         >
           <NInput
-            v-model:value="formModel.name"
+            v-model:value="formModel.username"
             type="text"
           ></NInput>
         </NFormItem>
@@ -57,6 +60,14 @@
           >Sign Up</NButton
         >
 
+        <NButton
+          class="mt-4"
+          type="default"
+          :block="true"
+        >
+          <a href="/api/login/github">Continue with Github</a>
+        </NButton>
+
         <p class="my-8 text-base">
           Already have an account?
           <nuxt-link
@@ -82,11 +93,15 @@
     useMessage,
   } from 'naive-ui';
 
+  definePageMeta({
+    middleware: ['redirect-logged-in'],
+  });
+
   const message = useMessage();
   const formModel = ref({
     email: '',
     password: '',
-    name: '',
+    username: '',
     confirmPassword: '',
   });
   const isSubmitting = ref(false);
@@ -99,7 +114,7 @@
       type: 'email',
       trigger: ['input', 'blur'],
     },
-    name: {
+    username: {
       required: true,
       trigger: ['input', 'blur'],
     },
