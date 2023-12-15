@@ -1,5 +1,8 @@
+/* eslint-disable max-lines-per-function */
 import { H3Event } from 'h3';
 import { OAuthRequestError } from '@lucia-auth/oauth';
+import { eq } from 'drizzle-orm';
+import { user as DBUser } from '~/server/utils/db/schema';
 
 // eslint-disable-next-line complexity
 export default defineEventHandler(async function googleCallbackHandler(
@@ -20,14 +23,31 @@ export default defineEventHandler(async function googleCallbackHandler(
   }
 
   try {
-    const { getExistingUser, googleUser, createUser } =
+    const { getExistingUser, googleUser, createUser, createKey } =
       await googleAuth.validateCallback(code);
 
+    // eslint-disable-next-line complexity
     const getUser = async function () {
       const existingUser = await getExistingUser();
       if (existingUser) {
         return existingUser;
       }
+
+      if (googleUser.email_verified && googleUser.email) {
+        const existingDatabaseUsersWithEmail = await db
+          .select()
+          .from(DBUser)
+          .where(eq(DBUser.email, googleUser.email));
+
+        if (existingDatabaseUsersWithEmail.length) {
+          const dbUserWithEmail = existingDatabaseUsersWithEmail[0];
+
+          const user = auth.transformDatabaseUser(dbUserWithEmail);
+          await createKey(user.userId);
+          return user;
+        }
+      }
+
       return await createUser({
         attributes: {
           username: googleUser.name.replace(' ', '_').toLowerCase(),
