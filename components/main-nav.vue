@@ -32,6 +32,7 @@
       </ul>
 
       <ul
+        v-if="!user"
         class="col-span-12 mx-0 flex flex-col items-start justify-end gap-4 px-0 md:col-span-2 md:flex-row md:items-center md:gap-6"
         :class="{ 'hidden-on-mobile': isMenuClosed }"
       >
@@ -43,10 +44,30 @@
         <li>
           <NButton type="primary">
             <nuxt-link
-              to="/register"
+              to="/signup"
               class="text-white"
-              >Register</nuxt-link
+              >Sign Up</nuxt-link
             >
+          </NButton>
+        </li>
+      </ul>
+
+      <ul
+        v-if="user"
+        class="col-span-12 mx-0 flex flex-col items-start justify-end gap-4 px-0 md:col-span-2 md:flex-row md:items-center md:gap-6"
+        :class="{ 'hidden-on-mobile': isMenuClosed }"
+      >
+        <li>
+          <NButton>
+            <nuxt-link to="/profile">Edit Profile</nuxt-link>
+          </NButton>
+        </li>
+        <li>
+          <NButton
+            type="primary"
+            @click="handleLogout"
+          >
+            Logout
           </NButton>
         </li>
       </ul>
@@ -55,8 +76,10 @@
 </template>
 
 <script setup lang="ts">
-  import { NButton } from 'naive-ui';
+  import { NButton, useMessage } from 'naive-ui';
+  const message = useMessage();
   const isMenuClosed = ref(true);
+  const user = useUser();
   const menuOptions = [
     {
       label: 'Apply',
@@ -75,6 +98,17 @@
       path: '/learning-list',
     },
   ];
+
+  async function handleLogout() {
+    try {
+      await $fetch('/api/logout', {
+        method: 'POST',
+      });
+      message.success('Successfully logged out');
+    } catch (error) {
+      message.error('Something went wrong, please try again!');
+    }
+  }
 </script>
 
 <style scopped>

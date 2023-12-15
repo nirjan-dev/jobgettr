@@ -25,3 +25,6 @@ logs
 
 # stylelint
 .stylelintcache
+
+# Database
+local.db

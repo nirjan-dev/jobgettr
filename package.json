@@ -9,7 +9,9 @@
     "postinstall": "nuxt prepare",
     "commit": "cz",
     "prepare": "husky install",
-    "lint-staged": "lint-staged"
+    "lint-staged": "lint-staged",
+    "db:studio": "drizzle-kit studio",
+    "db:push": "drizzle-kit push:sqlite --config=drizzle.config.ts"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.7.2",
@@ -27,6 +29,7 @@
     "@vueuse/nuxt": "^10.3.0",
     "commitizen": "^4.3.0",
     "cz-conventional-changelog": "^3.3.0",
+    "drizzle-kit": "^0.20.6",
     "eslint": "^8.50.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-no-loops": "^0.3.0",
@@ -50,9 +53,13 @@
   },
   "dependencies": {
     "@css-render/vue3-ssr": "^0.15.12",
+    "@libsql/client": "^0.3.0",
+    "@lucia-auth/adapter-sqlite": "^2.0.1",
     "@pinia/nuxt": "^0.4.11",
     "@sparticuz/chromium": "^119.0.0",
+    "drizzle-orm": "^0.29.1",
     "langchain": "^0.0.154",
+    "lucia": "^2.7.4",
     "naive-ui": "^2.34.4",
     "pinia": "^2.1.6",
     "puppeteer-core": "^21.5.2"
